@@ -1,7 +1,12 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useMovetoPage } from "../../../commons/hooks/movepage";
 import MainPresenter from "./main.presenter";
 import copy from "copy-to-clipboard";
+import axios from "axios";
+import { userInfoState } from "../../../commons/store";
+import { useRecoilState } from "recoil";
+import { Modal } from "antd";
+import { useRouter } from "next/router";
 
 export default function MainContainer() {
   const { onClickMoveToPage } = useMovetoPage();
@@ -17,6 +22,57 @@ export default function MainContainer() {
   const [send, setSend] = useState(false);
   // 스왑 모달  state
   const [swap, setSwap] = useState(false);
+
+  // recoil
+  const [userinfo, setUserInfo] = useRecoilState(userInfoState);
+
+  // userNm
+  const [userNm, setUserNm] = useState("");
+
+  const [address, setAddress] = useState("");
+
+  const [balance, setBalance] = useState("");
+  const [symbol, setSymbol] = useState("");
+  const [tokenId, setTokenId] = useState(0);
+
+  const router = useRouter();
+
+  const getUserInfo = async () => {
+    try {
+      await axios({
+        url: "/v1/main/wallet-main",
+        method: "GET",
+      }).then((response) => {
+        console.log(response);
+        if (response.data.status === 200) {
+          {
+            response.data.result.wallet.map((el: any) => {
+              setUserNm(el.walletNm);
+              setAddress(el.address);
+              el.token.map((v: any) => {
+                setBalance(v.balance);
+                setSymbol(v.symbol);
+                setTokenId(v.tokenId);
+              });
+            });
+          }
+          setUserInfo(response.data.result);
+        }
+        if (response.data.status === 301) {
+          Modal.error({
+            content: "세션이 만료되었습니다.다시 로그인해주세요.",
+          });
+          router.push(`/`);
+        }
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getUserInfo();
+  }, []);
 
   const showModal = () => {
     setIsModalOpen(true);
@@ -76,8 +132,19 @@ export default function MainContainer() {
   const onClickTokenList = () => {
     setTab(false);
   };
-  const onClickTransaction = () => {
+  const onClickTransaction = async () => {
     setTab(true);
+    try {
+      await axios
+        .post("/v1/main/trans-info", {
+          address: address,
+        })
+        .then((response) => {
+          console.log(response);
+        });
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -104,6 +171,12 @@ export default function MainContainer() {
       swapOk={swapOk}
       swapCancel={swapCancel}
       swap={swap}
+      userinfo={userinfo}
+      userNm={userNm}
+      address={address}
+      balance={balance}
+      symbol={symbol}
+      tokenId={tokenId}
     />
   );
 }

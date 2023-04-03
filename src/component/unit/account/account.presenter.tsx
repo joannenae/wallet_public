@@ -102,6 +102,7 @@ export default function AccountPresenter(props: IAccountPresenter) {
                       </div>
                       <Select
                         labelInValue
+                        //@ts-ignore
                         defaultValue={{
                           value: "privatekey",
                           label: "개인키",
@@ -235,14 +236,16 @@ export default function AccountPresenter(props: IAccountPresenter) {
           />
         </S.PcAccountHeaderBox>
         <div style={{ overflowY: "scroll", height: 200 }}>
-          <S.PcAccountContainer>
-            <S.PcAccountName>attosiss</S.PcAccountName>
-            <S.PcAccountAmount>299.616891 KLAY</S.PcAccountAmount>
-          </S.PcAccountContainer>
-          <S.PcAccountContainer>
-            <S.PcAccountName>attosiss</S.PcAccountName>
-            <S.PcAccountAmount>299.616891 KLAY</S.PcAccountAmount>
-          </S.PcAccountContainer>
+          {props.userinfo.wallet.map((el) => {
+            return (
+              <S.PcAccountContainer>
+                <S.PcAccountName>{el.walletNm}</S.PcAccountName>
+                {el.token.map((v, i) => {
+                  return <S.PcAccountAmount>{v.balance}</S.PcAccountAmount>;
+                })}
+              </S.PcAccountContainer>
+            );
+          })}
         </div>
         <S.PcAccountFooter>
           <S.PcAccountButton
@@ -327,6 +330,7 @@ export default function AccountPresenter(props: IAccountPresenter) {
                       </div>
                       <Select
                         labelInValue
+                        //@ts-ignore
                         defaultValue={{
                           value: "privatekey",
                           label: "개인키",

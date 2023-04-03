@@ -62,6 +62,12 @@ export default function GetWalletContainer() {
                 if (response.data.status === 103) {
                   Modal.error({ content: "통신 오류 !" });
                 }
+                if (response.data.status === 301) {
+                  Modal.error({
+                    content: "세션이 만료되었습니다.다시 로그인해주세요.",
+                  });
+                  router.push(`/`);
+                }
               });
           } catch (error) {
             console.log(error);

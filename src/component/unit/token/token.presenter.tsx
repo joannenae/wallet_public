@@ -18,46 +18,19 @@ export default function TokenPresenter(props: ITokenPresenter) {
         </S.MoTokenBox>
       </Mobile>
       <PC>
-        <S.PcTokenBox>
+        <S.PcTokenBox onClick={props.onClickTokenDetail}>
           <S.PcTokenContent>
             <S.PcTokenLogo src="/image/ethereum.png" />
             <S.PcTokenAmount>
-              <div style={{ fontWeight: "bold" }}>0 ETH</div>
+              <div style={{ fontWeight: "bold" }}>
+                {props.balance}
+                {props.symbol}
+              </div>
               <div style={{ marginTop: "10%" }}>$0.00 USD</div>
             </S.PcTokenAmount>
           </S.PcTokenContent>
           <img src="/image/tokenarrow.png" />
         </S.PcTokenBox>
-        {/* <S.PcTokenBox>
-          <S.PcTokenContent>
-            <S.PcTokenLogo src="/image/ethereum.png" />
-            <S.PcTokenAmount>
-              <div style={{ fontWeight: "bold" }}>0 ETH</div>
-              <div style={{ marginTop: "10%" }}>$0.00 USD</div>
-            </S.PcTokenAmount>
-          </S.PcTokenContent>
-          <img src="/image/tokenarrow.png" />
-        </S.PcTokenBox>
-        <S.PcTokenBox>
-          <S.PcTokenContent>
-            <S.PcTokenLogo src="/image/ethereum.png" />
-            <S.PcTokenAmount>
-              <div style={{ fontWeight: "bold" }}>0 ETH</div>
-              <div style={{ marginTop: "10%" }}>$0.00 USD</div>
-            </S.PcTokenAmount>
-          </S.PcTokenContent>
-          <img src="/image/tokenarrow.png" />
-        </S.PcTokenBox>
-        <S.PcTokenBox>
-          <S.PcTokenContent>
-            <S.PcTokenLogo src="/image/ethereum.png" />
-            <S.PcTokenAmount>
-              <div style={{ fontWeight: "bold" }}>0 ETH</div>
-              <div style={{ marginTop: "10%" }}>$0.00 USD</div>
-            </S.PcTokenAmount>
-          </S.PcTokenContent>
-          <img src="/image/tokenarrow.png" />
-        </S.PcTokenBox> */}
       </PC>
     </>
   );

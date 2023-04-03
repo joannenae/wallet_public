@@ -17,18 +17,22 @@ export const PcLogo = styled.div`
 `;
 export const PcHeaderRight = styled.div`
   display: flex;
+  justify-content: space-around;
+  /* justify-content: space-evenly; */
   align-items: center;
-  justify-content: space-evenly;
-  width: 30%;
+  width: 35%;
   font-size: 2.5rem;
 `;
 export const PcNetCirBox = styled.div`
   display: flex;
   justify-content: center;
+  /* justify-content: flex-end; */
   align-items: center;
-  width: 60%;
+  width: 50%;
+
   cursor: pointer;
   position: relative;
+  /* border: 1px solid black; */
 `;
 export const PcActive = styled.div`
   display: flex;
@@ -40,8 +44,8 @@ export const PcCir = styled.div`
 `;
 
 export const PcNet = styled.div`
-  font-size: 1.7rem;
-  padding-left: 5px;
+  font-size: 2rem;
+  padding-left: 7px;
 `;
 export const PcNetBox = styled.div`
   box-shadow: -1px 4px 10px 4px rgba(87, 87, 87, 0.25);
@@ -69,7 +73,9 @@ export const PcNetlist = styled.div`
 export const PcListCir = styled.div`
   margin-right: 5px;
 `;
-export const PcList = styled.div``;
+export const PcList = styled.div`
+  font-size: 1.7rem;
+`;
 
 export const PcNetAdd = styled.div`
   font-size: 1.4rem;

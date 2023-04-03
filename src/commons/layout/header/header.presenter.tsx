@@ -3,9 +3,21 @@ import AccountContainer from "../../../component/unit/account/account.container"
 import { Mobile, PC } from "../../hooks/mediaquery";
 import * as S from "./header.styles";
 import { IHeaderPresenter } from "./header.types";
+import Tooltip, { tooltipClasses, TooltipProps } from "@mui/material/Tooltip";
+import { styled } from "@mui/material/styles";
 
 export default function HeaderPresenter(props: IHeaderPresenter) {
   const router = useRouter();
+  const LightTooltip = styled(({ className, ...props }: TooltipProps) => (
+    <Tooltip {...props} classes={{ popper: className }} />
+  ))(({ theme }) => ({
+    [`& .${tooltipClasses.tooltip}`]: {
+      backgroundColor: theme.palette.common.white,
+      color: "rgba(0, 0, 0, 0.87)",
+      boxShadow: theme.shadows[1],
+      fontSize: 11,
+    },
+  }));
   return (
     <>
       <Mobile>
@@ -63,7 +75,10 @@ export default function HeaderPresenter(props: IHeaderPresenter) {
               />
               {props.accountActive && (
                 <S.MoAccountActive>
-                  <AccountContainer setAccountActive={props.setAccountActive} />
+                  <AccountContainer
+                    setAccountActive={props.setAccountActive}
+                    userinfo={props.userinfo}
+                  />
                 </S.MoAccountActive>
               )}
             </S.PcAccount>
@@ -76,20 +91,36 @@ export default function HeaderPresenter(props: IHeaderPresenter) {
             DreamWallet
           </S.PcLogo>
           <S.PcHeaderRight>
+            <div
+              style={{
+                fontSize: "1.8rem",
+                fontWeight: "500",
+                letterSpacing: 3,
+                background: "#fffdf2",
+              }}
+            >
+              {props.userinfo.name} 님
+            </div>
             <S.PcNetCirBox>
               <S.PcActive onClick={props.onClickActive}>
                 <S.PcCir>●</S.PcCir>
-                <S.PcNet>Baobab 테스트넷</S.PcNet>
+                {props.userinfo?.userNet?.map((el) => {
+                  return (
+                    <>
+                      <S.PcNet>{el.networkType}</S.PcNet>
+                    </>
+                  );
+                })}
                 <div>
                   {props.active ? (
                     <img
                       src="/image/sortup.png"
-                      style={{ width: "38%", marginLeft: 10 }}
+                      style={{ width: "38%", marginLeft: 7 }}
                     />
                   ) : (
                     <img
                       src="/image/sortdown.png"
-                      style={{ width: "38%", marginLeft: 10 }}
+                      style={{ width: "38%", marginLeft: 7 }}
                     />
                   )}
                 </div>
@@ -105,7 +136,13 @@ export default function HeaderPresenter(props: IHeaderPresenter) {
                   >
                     <S.PcNetlist>
                       <S.PcListCir>●</S.PcListCir>
-                      <S.PcList>메인넷</S.PcList>
+                      {props.userinfo?.userNet?.map((el) => {
+                        return (
+                          <>
+                            <S.PcList>{el.networkType}</S.PcList>
+                          </>
+                        );
+                      })}
                     </S.PcNetlist>
                     <S.PcNetAdd
                       onClick={() => {
@@ -122,15 +159,25 @@ export default function HeaderPresenter(props: IHeaderPresenter) {
             <S.PcAccount>
               <img
                 src="/image/user.png"
-                style={{ width: "37%" }}
+                style={{ width: "30%" }}
                 onClick={props.onClickAccountActive}
               />
               {props.accountActive && (
                 <S.PcAccountActive>
-                  <AccountContainer setAccountActive={props.setAccountActive} />
+                  <AccountContainer
+                    setAccountActive={props.setAccountActive}
+                    userinfo={props.userinfo}
+                  />
                 </S.PcAccountActive>
               )}
             </S.PcAccount>
+            <LightTooltip title="로그아웃">
+              <img
+                src="/image/logout.png"
+                style={{ width: 30, cursor: "pointer" }}
+                onClick={props.onClickLogOut}
+              />
+            </LightTooltip>
           </S.PcHeaderRight>
         </S.PcHeader>
       </PC>

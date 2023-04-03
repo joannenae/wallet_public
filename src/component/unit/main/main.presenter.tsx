@@ -21,7 +21,8 @@ export default function MainPresenter(props: IMainPresenter) {
       duration: 1500,
     });
   });
-  let arr: string = "0xeccfe9da751317921ef767d2a96975188bfe3d96";
+
+  let arr: string = props.address;
   let test =
     arr.substring(0, 3) + "******" + arr.substring(arr.length - 3, arr.length);
 
@@ -82,7 +83,10 @@ export default function MainPresenter(props: IMainPresenter) {
                   </Button>,
                 ]}
               >
-                <DetailContainer />
+                <DetailContainer
+                  userNm={props.userNm}
+                  address={props.address}
+                />
               </Modal>
               <LightTooltip title={props.isCopy ? "Success!" : "Paste!"}>
                 <S.MoWalletAddress
@@ -236,7 +240,11 @@ export default function MainPresenter(props: IMainPresenter) {
                   paddingBottom: "3%",
                 }}
               >
-                <TokenContainer />
+                <TokenContainer
+                  balance={props.balance}
+                  symbol={props.symbol}
+                  tokenId={props.tokenId}
+                />
               </div>
             )}
           </S.MoContainer>
@@ -260,7 +268,8 @@ export default function MainPresenter(props: IMainPresenter) {
                     fontWeight: "600",
                   }}
                 >
-                  attosiss {">"}
+                  {props.userNm}
+                  {" >"}
                 </Button>
               </LightTooltip>
               <Modal
@@ -288,7 +297,10 @@ export default function MainPresenter(props: IMainPresenter) {
                   </Button>,
                 ]}
               >
-                <DetailContainer />
+                <DetailContainer
+                  userNm={props.userNm}
+                  address={props.address}
+                />
               </Modal>
 
               <Divider
@@ -324,7 +336,10 @@ export default function MainPresenter(props: IMainPresenter) {
                     }}
                   />
                 </div>
-                <S.PcAmount>0 ETH</S.PcAmount>
+                <S.PcAmount>
+                  {props.balance}
+                  {props.symbol}
+                </S.PcAmount>
               </S.PcImgBox>
             </S.PcContent>
             <S.PcButtonBox>
@@ -449,7 +464,11 @@ export default function MainPresenter(props: IMainPresenter) {
                   paddingBottom: "3%",
                 }}
               >
-                <TokenContainer />
+                <TokenContainer
+                  balance={props.balance}
+                  symbol={props.symbol}
+                  tokenId={props.tokenId}
+                />
               </div>
             )}
           </S.PcContainer>

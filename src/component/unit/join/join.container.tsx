@@ -69,8 +69,11 @@ export default function JoinContainer() {
             setDuplicate(true);
             Modal.success({ content: "사용가능한 이메일입니다!." });
           }
-          if (response.data.status === 102) {
+          if (response.data.status === 101) {
             Modal.error({ content: "사용중인 이메일입니다." });
+          }
+          if (response.data.status === 300) {
+            Modal.error({ content: "예상치 못한 오류입니다." });
           }
         });
     } catch (error) {
@@ -104,7 +107,7 @@ export default function JoinContainer() {
               }, 1000);
             }
             if (response.data.status === 101) {
-              Modal.error({ content: "이메일 형식을 재확인해주세요." });
+              Modal.error({ content: "DB 저장 오류." });
             }
             if (response.data.status === 300) {
               Modal.error({ content: "시스템 오류! 다시 시도해주세요" });

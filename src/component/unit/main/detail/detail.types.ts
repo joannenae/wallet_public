@@ -30,4 +30,20 @@ export interface IDetailPresenter {
   keypassConfirm: string;
   setKeyPass: Dispatch<SetStateAction<string>>;
   setKeyPassConfirm: Dispatch<SetStateAction<string>>;
+
+  userNm: string;
+  address: string;
+
+  privatekey: string;
+  error: string;
+
+  onChangeEditName: (event: ChangeEvent<HTMLInputElement>) => void;
+  onClickEdit: () => void;
+
+  edit: string;
+}
+
+export interface IDetailContainer {
+  userNm: string;
+  address: string;
 }

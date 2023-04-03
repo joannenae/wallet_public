@@ -3,8 +3,10 @@ import axios from "axios";
 import { ChangeEvent, useState } from "react";
 import DetailPresenter from "./detail.presenter";
 import copy from "copy-to-clipboard";
+import { IDetailContainer } from "./detail.types";
+import { useRouter } from "next/router";
 
-export default function DetailContainer() {
+export default function DetailContainer(props: IDetailContainer) {
   // 계정 이름 변경 state
   const [change, setChange] = useState(false);
   // 클립보드 복사
@@ -21,14 +23,13 @@ export default function DetailContainer() {
   const [keypass, setKeyPass] = useState("");
   const [keypassConfirm, setKeyPassConfirm] = useState("");
 
-  // 계정 이름 수정
-  const onChangeEdit = () => {
-    setChange(true);
-  };
+  const [privatekey, setPrivateKey] = useState("");
+  const [error, setError] = useState("");
 
-  const onChangeCancel = () => {
-    setChange(false);
-  };
+  // 계정 이름 input
+  const [edit, setEdit] = useState("");
+
+  const router = useRouter();
 
   // 비공개키 내보내기 모달
   const showSecret = () => {
@@ -43,6 +44,7 @@ export default function DetailContainer() {
     setSecret(false);
     setStatus(false);
     setPassword("");
+    setError("");
   };
   // 비공개키 입력
   const onChangePassword = (e: ChangeEvent<HTMLInputElement>) => {
@@ -50,8 +52,32 @@ export default function DetailContainer() {
   };
 
   // 비공개키 입력 버튼
-  const onClickPassword = () => {
-    setStatus(true);
+  const onClickPassword = async () => {
+    try {
+      await axios
+        .post("/v1/wallet/wallet-pk", {
+          address: props.address,
+          password: password,
+        })
+        .then((response) => {
+          if (response.data.status === 200) {
+            setStatus(true);
+            setPrivateKey(response.data.result);
+          }
+          if (response.data.status !== 200) {
+            setStatus(false);
+            setError(response.data.result);
+          }
+          if (response.data.status === 301) {
+            Modal.error({
+              content: "세션이 만료되었습니다.다시 로그인해주세요.",
+            });
+            router.push(`/`);
+          }
+        });
+    } catch (error) {
+      console.log(error);
+    }
   };
   // 키스토어 비밀번호 설정 모달
   const showKeystore = () => {
@@ -59,20 +85,28 @@ export default function DetailContainer() {
   };
 
   const keystoreOk = async () => {
-    console.log(keypass);
-    console.log(keypassConfirm);
     if (keypass && keypassConfirm) {
       try {
         await axios
           .post("/v1/wallet/export-keystore", {
-            address: "0xc51581f158ed330880985ca3b5935ce3ae03e6b2",
+            address: props.address,
             password: keypass,
           })
           .then((response) => {
+            console.log(response);
             if (response.data.status === 200) {
-              Modal.success({ content: "비밀번호 생성 완료" });
-              //     setKeyOpen(false);
-              //다운로드 시키기
+              const address = response.data.result.keystore.address;
+              let fileName = "DreamWallet-" + address + ".json";
+              let output = JSON.stringify(response.data.result.keystore);
+              const element = document.createElement("a");
+              const file = new Blob([output], {
+                type: "application/json",
+              });
+              element.href = URL.createObjectURL(file);
+              console.log(URL.createObjectURL(file));
+              element.download = fileName;
+              document.body.appendChild(element); // FireFox
+              element.click();
             }
             if (response.data.status === 101) {
               Modal.error({ content: "비밀번호 생성 오류" });
@@ -82,6 +116,12 @@ export default function DetailContainer() {
             }
             if (response.data.status === 103) {
               Modal.error({ content: "정보 저장 오류" });
+            }
+            if (response.data.status === 301) {
+              Modal.error({
+                content: "세션이 만료되었습니다.다시 로그인해주세요.",
+              });
+              router.push(`/`);
             }
           });
       } catch (error) {
@@ -104,6 +144,43 @@ export default function DetailContainer() {
   setTimeout(() => {
     setIsCopy(false);
   }, 3500);
+
+  // 계정 이름 수정
+  const onChangeEdit = () => {
+    setChange(true);
+  };
+
+  const onChangeCancel = () => {
+    setChange(false);
+  };
+
+  const onChangeEditName = (event: ChangeEvent<HTMLInputElement>) => {
+    setEdit(event.target.value);
+  };
+
+  const onClickEdit = async () => {
+    try {
+      await axios
+        .post("/v1/wallet/walletName-change", {
+          address: props.address,
+          name: edit,
+        })
+        .then((response) => {
+          if (response.data.status === 200) {
+            Modal.success({ content: "계정 이름이 변경 되었습니다." });
+            setChange(false);
+          }
+          if (response.data.status === 301) {
+            Modal.error({
+              content: "세션이 만료되었습니다.다시 로그인해주세요.",
+            });
+            router.push(`/`);
+          }
+        });
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <DetailPresenter
@@ -128,6 +205,13 @@ export default function DetailContainer() {
       keystoreCancel={keystoreCancel}
       handleCopyClipBoard={handleCopyClipBoard}
       onChangeCancel={onChangeCancel}
+      address={props.address}
+      userNm={props.userNm}
+      privatekey={privatekey}
+      error={error}
+      onChangeEditName={onChangeEditName}
+      onClickEdit={onClickEdit}
+      edit={edit}
     />
   );
 }

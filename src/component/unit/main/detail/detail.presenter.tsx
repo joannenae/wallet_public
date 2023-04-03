@@ -8,7 +8,7 @@ import * as S from "./detail.styles";
 import { IDetailPresenter } from "./detail.types";
 
 export default function DetailPresenter(props: IDetailPresenter) {
-  let arr = "0xeccfe9da751317921ef767d2a96975188bfe3d96";
+  let arr = props.address;
 
   const LightTooltip = styled(({ className, ...props }: TooltipProps) => (
     <Tooltip {...props} classes={{ popper: className }} />
@@ -312,7 +312,8 @@ export default function DetailPresenter(props: IDetailPresenter) {
               >
                 {/* 받아오는 계정 명을 defaultValue에 넣어줘야 수정 가능 */}
                 <S.PcEditInput
-                  defaultValue="attosiss"
+                  defaultValue={props.userNm}
+                  value={props.edit}
                   style={{
                     height: 30,
                     padding: 10,
@@ -320,8 +321,9 @@ export default function DetailPresenter(props: IDetailPresenter) {
                     borderRadius: "15px",
                     border: "1px solid gray",
                   }}
+                  onChange={props.onChangeEditName}
                 />
-                <S.PcEditName>수정</S.PcEditName>
+                <S.PcEditName onClick={props.onClickEdit}>수정</S.PcEditName>
                 <S.PcEditCancel onClick={props.onChangeCancel}>
                   취소
                 </S.PcEditCancel>
@@ -335,7 +337,7 @@ export default function DetailPresenter(props: IDetailPresenter) {
                     marginTop: 20,
                   }}
                 >
-                  attosiss
+                  {props.change === false ? props.edit : props.userNm}
                 </div>
                 <img
                   src="/image/edit.png"
@@ -357,7 +359,7 @@ export default function DetailPresenter(props: IDetailPresenter) {
               marginTop: 20,
             }}
           >
-            <QRCode value="0xeccfe9da751317921ef767d2a96975188bfe3d96" />
+            <QRCode value={props.address} />
           </div>
           <LightTooltip title={props.isCopy ? "Success!" : "Paste!"}>
             <S.PcModalAddress onClick={() => props.handleCopyClipBoard(arr)}>
@@ -403,7 +405,7 @@ export default function DetailPresenter(props: IDetailPresenter) {
                 textAlign: "center",
               }}
             >
-              attosiss
+              {props.userNm}
             </div>
             <div
               style={{
@@ -414,7 +416,7 @@ export default function DetailPresenter(props: IDetailPresenter) {
                 fontSize: "1.4rem",
               }}
             >
-              0x7168BD1A2340994430310f7d184450A596B3177c
+              {props.address}
             </div>
             <div
               style={{
@@ -456,15 +458,15 @@ export default function DetailPresenter(props: IDetailPresenter) {
             {props.status === true ? (
               <div
                 style={{
-                  width: "80%",
-                  height: 40,
+                  width: "100%",
                   fontSize: "1.5rem",
                   padding: 10,
                   marginBottom: 30,
+                  borderRadius: 10,
                   border: "1px solid lightgray",
                 }}
               >
-                10asdfa12asfasw31asfw3irljasldkfj2
+                {props.privatekey}
               </div>
             ) : (
               <>
@@ -474,10 +476,10 @@ export default function DetailPresenter(props: IDetailPresenter) {
                     height: 40,
                     fontSize: "1.5rem",
                     padding: 10,
-                    marginBottom: 30,
                   }}
                   onChange={props.onChangePassword}
                 />
+                <S.PcError>{props.error}</S.PcError>
                 <Button
                   type="primary"
                   disabled={!props.password}

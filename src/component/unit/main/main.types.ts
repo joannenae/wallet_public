@@ -27,4 +27,35 @@ export interface IMainPresenter {
   swapCancel: () => void;
 
   onClickMoveToPage: (path: string) => () => void;
+  address: string;
+  userNm: string;
+  userinfo: {};
+  balance: string;
+  symbol: string;
+  tokenId: number;
+  // name: string;
+  // userId: number;
+  // userNet: [
+  //   {
+  //     chainID: string;
+  //     networkId: number;
+  //     networkNm: string;
+  //     networkType: string;
+  //   }
+  // ];
+  // wallet: [
+  //   {
+  //     address: string;
+  //     deFlag: string;
+  //     walletId: number;
+  //     walletNm: string;
+  //     token: [
+  //       {
+  //         balance: string;
+  //         symbol: string;
+  //         tokenId: number;
+  //       }
+  //     ];
+  //   }
+  // ];
 }

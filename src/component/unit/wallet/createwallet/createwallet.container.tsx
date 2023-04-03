@@ -1,5 +1,6 @@
 import { Modal } from "antd";
 import axios from "axios";
+import { useRouter } from "next/router";
 import { ChangeEvent, useState } from "react";
 import { useMovetoPage } from "../../../../commons/hooks/movepage";
 import CreateWalletPresenter from "./createwallet.presenter";
@@ -23,6 +24,7 @@ export default function CreateWalletContainer() {
   const [hash, setHash] = useState<any | null>(null);
   const [success, setSuccess] = useState(false);
   const { onClickMoveToPage } = useMovetoPage();
+  const router = useRouter();
 
   const next = () => {
     setCurrent(current + 1);
@@ -52,8 +54,14 @@ export default function CreateWalletContainer() {
           const arr = result.split(" ");
           setMnemonic(arr);
         }
-        if (response.data.status === 301) {
+        if (response.data.status === 300) {
           Modal.error({ content: "비밀 복구 구문 생성 오류" });
+        }
+        if (response.data.status === 301) {
+          Modal.error({
+            content: "세션이 만료되었습니다.다시 로그인해주세요.",
+          });
+          router.push(`/`);
         }
       });
     } catch (error) {
@@ -78,26 +86,30 @@ export default function CreateWalletContainer() {
     }
   };
 
-  console.log(hash);
-
   const onClickCreate = async () => {
     try {
       await axios
-        .post("/v1/wallet/create-wallet", { mnemonic: hash?.toString() })
+        .post("/v1/wallet/init-wallet", { mnemonic: hash?.toString() })
         .then((response) => {
           console.log(response);
           if (response.data.status === 200) {
             setSuccess(true);
             Modal.success({ content: "지갑이 생성되었습니다." });
           }
-          if (response.data.status === 101) {
+          if (response.data.result === "DB 오류TOKEN") {
             Modal.error({ content: "지갑 생성에 실패하였습니다." });
           }
-          if (response.data.status === 102) {
+          if (response.data.result === "DB 오류") {
             Modal.error({ content: "지갑 정보 저장 오류" });
           }
-          if (response.data.status === 103) {
-            Modal.error({ content: "axios error" });
+          if (response.data.status === 300) {
+            Modal.error({ content: "예상치 못한 오류입니다." });
+          }
+          if (response.data.status === 301) {
+            Modal.error({
+              content: "세션이 만료되었습니다.다시 로그인해주세요.",
+            });
+            router.push(`/`);
           }
         });
     } catch (error) {

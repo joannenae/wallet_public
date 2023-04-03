@@ -57,6 +57,13 @@ export const PcPrivateKey = styled.div`
   font-size: 1.5rem;
   cursor: pointer;
 `;
+
+export const PcError = styled.div`
+  color: red;
+  margin-top: 10px;
+  margin-bottom: 20px;
+  font-size: 1.2rem;
+`;
 //---------------------------mobile--------------------
 
 export const MoModalAddress = styled.div`

@@ -2,6 +2,33 @@ import { ChangeEvent, Dispatch, SetStateAction } from "react";
 
 export interface IAccountContainer {
   setAccountActive: Dispatch<SetStateAction<boolean>>;
+  userinfo: {
+    name: string;
+    userId: number;
+    userNet: [
+      {
+        chainID: string;
+        networkId: number;
+        networkNm: string;
+        networkType: string;
+      }
+    ];
+    wallet: [
+      {
+        address: string;
+        deFlag: string;
+        walletId: number;
+        walletNm: string;
+        token: [
+          {
+            balance: string;
+            symbol: string;
+            tokenId: number;
+          }
+        ];
+      }
+    ];
+  };
 }
 export interface IAccountPresenter {
   status: string;
@@ -53,4 +80,32 @@ export interface IAccountPresenter {
   privatekey: string;
   keypassword: string;
   num: string;
+
+  userinfo: {
+    name: string;
+    userId: number;
+    userNet: [
+      {
+        chainID: string;
+        networkId: number;
+        networkNm: string;
+        networkType: string;
+      }
+    ];
+    wallet: [
+      {
+        address: string;
+        deFlag: string;
+        walletId: number;
+        walletNm: string;
+        token: [
+          {
+            balance: string;
+            symbol: string;
+            tokenId: number;
+          }
+        ];
+      }
+    ];
+  };
 }
