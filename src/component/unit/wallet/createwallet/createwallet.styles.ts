@@ -143,7 +143,8 @@ export const PcCheckDiv = styled.div`
   border: 1px solid black;
 `;
 export const PcCheckInput = styled.input`
-  width: 80%;
+  width: 75%;
+  padding: 5px;
   border: none;
   font-size: 1.7rem;
   height: 50%;

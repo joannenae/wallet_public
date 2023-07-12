@@ -66,6 +66,9 @@ export const PcCheckButton = styled.button`
   background-color: #0c70f2;
   font-size: 1.7rem;
   cursor: pointer;
+  :disabled {
+    background-color: gray;
+  }
 `;
 //-----------mobile
 export const MoDownHeader = styled.div`

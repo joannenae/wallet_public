@@ -25,7 +25,7 @@ export const PcTokenAmount = styled.div`
   display: flex;
   flex-direction: column;
   font-size: 2.7rem;
-  padding: 2%;
+  margin-left: 3%;
 `;
 //------mo- 토큰박스 --------------------
 
@@ -35,7 +35,7 @@ export const MoTokenBox = styled.div`
   border-radius: 20px;
   box-shadow: -1px 4px 10px 4px rgba(87, 87, 87, 0.25);
   margin: 0 auto;
-  margin-top: 10%;
+  margin-top: 7%;
 
   display: flex;
   justify-content: space-between;

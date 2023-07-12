@@ -49,13 +49,14 @@ export default function MainPresenter(props: IMainPresenter) {
                   onClick={props.showModal}
                   style={{
                     color: "black",
-                    fontSize: "2.3rem",
+                    fontSize: "2.5rem",
                     height: "45px",
-                    paddingTop: 0,
-                    fontWeight: "bold",
+                    paddingTop: 10,
+                    fontWeight: 600,
                   }}
                 >
-                  attosiss {">"}
+                  {props.userNm}
+                  {" >"}
                 </Button>
               </LightTooltip>
               <Modal
@@ -84,6 +85,7 @@ export default function MainPresenter(props: IMainPresenter) {
                 ]}
               >
                 <DetailContainer
+                  walletId={props.walletId}
                   userNm={props.userNm}
                   address={props.address}
                 />
@@ -93,7 +95,10 @@ export default function MainPresenter(props: IMainPresenter) {
                   onClick={() => props.handleCopyClipBoard(arr)}
                 >
                   {test}
-                  <img src="/image/clipboard.png" style={{ width: "7%" }} />
+                  <img
+                    src="/image/clipboard.png"
+                    style={{ width: "7%", marginLeft: 6 }}
+                  />
                 </S.MoWalletAddress>
               </LightTooltip>
             </S.MoConTop>
@@ -114,7 +119,9 @@ export default function MainPresenter(props: IMainPresenter) {
                     }}
                   />
                 </div>
-                <S.MoAmount>0 ETH</S.MoAmount>
+                <S.MoAmount>
+                  {props.balance} {props.symbol}
+                </S.MoAmount>
               </S.MoImgBox>
             </S.PcContent>
             <S.MoButtonBox>
@@ -130,6 +137,7 @@ export default function MainPresenter(props: IMainPresenter) {
                 open={props.send}
                 onOk={props.sendOk}
                 onCancel={props.sendCancel}
+                confirmLoading={props.confirmLoading}
                 footer={[
                   <Button
                     key="back"
@@ -143,12 +151,25 @@ export default function MainPresenter(props: IMainPresenter) {
                     type="primary"
                     onClick={props.sendOk}
                     style={{ fontSize: 18, paddingTop: 0, height: 35 }}
+                    disabled={props.add === false}
                   >
-                    추가
+                    전송
                   </Button>,
                 ]}
               >
-                <SendContainer />
+                <SendContainer
+                  add={props.add}
+                  setAdd={props.setAdd}
+                  address={props.address}
+                  symbol={props.symbol}
+                  userNm={props.userNm}
+                  userinfo={props.userinfo}
+                  walletId={props.walletId}
+                  setAdr={props.setAdr}
+                  setBal={props.setBal}
+                  adr={props.adr}
+                  bal={props.bal}
+                />
               </Modal>
               <S.MoButton onClick={props.showSwap}>
                 스왑{" "}
@@ -180,7 +201,13 @@ export default function MainPresenter(props: IMainPresenter) {
                   </Button>,
                 ]}
               >
-                <SwapContainer />
+                <SwapContainer
+                  result={props.result}
+                  setToId={props.setToId}
+                  setFromId={props.setFromId}
+                  setValue={props.setValue}
+                  swapEs={props.swapEs}
+                />
               </Modal>
               <S.MoButton onClick={props.showToken}>
                 토큰 추가{" "}
@@ -211,7 +238,11 @@ export default function MainPresenter(props: IMainPresenter) {
                   </Button>,
                 ]}
               >
-                <ModalContainer />
+                <ModalContainer
+                  onChangeToken={props.onChangeToken}
+                  tokenResult={props.tokenResult}
+                  setTokenAdd={props.setTokenAdd}
+                />
               </Modal>
             </S.MoButtonBox>
             <S.MoTabBox>
@@ -230,7 +261,12 @@ export default function MainPresenter(props: IMainPresenter) {
                   paddingBottom: "3%",
                 }}
               >
-                <TransactionContainer />
+                <TransactionContainer
+                  trans={props.trans}
+                  loading={props.loading}
+                  setTrans={props.setTrans}
+                  walletId={props.walletId}
+                />
               </div>
             ) : (
               <div
@@ -243,7 +279,9 @@ export default function MainPresenter(props: IMainPresenter) {
                 <TokenContainer
                   balance={props.balance}
                   symbol={props.symbol}
-                  tokenId={props.tokenId}
+                  // tokenId={props.tokenId}
+                  userNm={props.userNm}
+                  userinfo={props.userinfo}
                 />
               </div>
             )}
@@ -253,7 +291,6 @@ export default function MainPresenter(props: IMainPresenter) {
       {/* pc */}
       <PC>
         <S.PcWrapper data-aos="fade-right">
-          {/* container */}
           <S.PcContainer>
             <S.PcConTop>
               <LightTooltip title="계정 정보">
@@ -298,6 +335,7 @@ export default function MainPresenter(props: IMainPresenter) {
                 ]}
               >
                 <DetailContainer
+                  walletId={props.walletId}
                   userNm={props.userNm}
                   address={props.address}
                 />
@@ -315,7 +353,10 @@ export default function MainPresenter(props: IMainPresenter) {
                   onClick={() => props.handleCopyClipBoard(arr)}
                 >
                   {test}
-                  <img src="/image/clipboard.png" style={{ width: "16%" }} />
+                  <img
+                    src="/image/clipboard.png"
+                    style={{ width: "14%", marginLeft: 10 }}
+                  />
                 </S.PcWalletAddress>
               </LightTooltip>
             </S.PcConTop>
@@ -337,8 +378,7 @@ export default function MainPresenter(props: IMainPresenter) {
                   />
                 </div>
                 <S.PcAmount>
-                  {props.balance}
-                  {props.symbol}
+                  {props.balance} {props.symbol}
                 </S.PcAmount>
               </S.PcImgBox>
             </S.PcContent>
@@ -355,6 +395,8 @@ export default function MainPresenter(props: IMainPresenter) {
                 open={props.send}
                 onOk={props.sendOk}
                 onCancel={props.sendCancel}
+                width={700}
+                confirmLoading={props.confirmLoading}
                 footer={[
                   <Button
                     key="back"
@@ -368,12 +410,25 @@ export default function MainPresenter(props: IMainPresenter) {
                     type="primary"
                     onClick={props.sendOk}
                     style={{ fontSize: 18, paddingTop: 0, height: 35 }}
+                    disabled={props.add === false}
                   >
-                    추가
+                    전송
                   </Button>,
                 ]}
               >
-                <SendContainer />
+                <SendContainer
+                  add={props.add}
+                  setAdd={props.setAdd}
+                  address={props.address}
+                  symbol={props.symbol}
+                  userNm={props.userNm}
+                  userinfo={props.userinfo}
+                  walletId={props.walletId}
+                  setAdr={props.setAdr}
+                  setBal={props.setBal}
+                  adr={props.adr}
+                  bal={props.bal}
+                />
               </Modal>
               <S.PcButton onClick={props.showSwap}>
                 스왑{" "}
@@ -398,14 +453,22 @@ export default function MainPresenter(props: IMainPresenter) {
                   <Button
                     key="submit"
                     type="primary"
-                    onClick={props.swapOk}
+                    onClick={
+                      props.check === true ? props.swapOk : props.swapEstimate
+                    }
                     style={{ fontSize: 18, paddingTop: 0, height: 35 }}
                   >
-                    스왑
+                    {props.check === true ? "스왑" : "수수료확인"}
                   </Button>,
                 ]}
               >
-                <SwapContainer />
+                <SwapContainer
+                  result={props.result}
+                  setFromId={props.setFromId}
+                  setToId={props.setToId}
+                  setValue={props.setValue}
+                  swapEs={props.swapEs}
+                />
               </Modal>
               <S.PcButton onClick={props.showToken}>
                 토큰 추가{" "}
@@ -432,11 +495,16 @@ export default function MainPresenter(props: IMainPresenter) {
                     onClick={props.tokenOk}
                     style={{ fontSize: 18, paddingTop: 0, height: 35 }}
                   >
+                    {/* {props.key === "1" ? "추가" : "토큰 확인"} */}
                     추가
                   </Button>,
                 ]}
               >
-                <ModalContainer />
+                <ModalContainer
+                  onChangeToken={props.onChangeToken}
+                  tokenResult={props.tokenResult}
+                  setTokenAdd={props.setTokenAdd}
+                />
               </Modal>
             </S.PcButtonBox>
             <S.PcTabBox>
@@ -450,16 +518,22 @@ export default function MainPresenter(props: IMainPresenter) {
             {props.tab ? (
               <div
                 style={{
+                  // height: "300px",
                   overflowY: "scroll",
                   paddingBottom: "3%",
                 }}
               >
-                <TransactionContainer />
+                <TransactionContainer
+                  trans={props.trans}
+                  loading={props.loading}
+                  setTrans={props.setTrans}
+                  walletId={props.walletId}
+                />
               </div>
             ) : (
               <div
                 style={{
-                  height: "250px",
+                  height: "300px",
                   overflowY: "scroll",
                   paddingBottom: "3%",
                 }}
@@ -467,7 +541,9 @@ export default function MainPresenter(props: IMainPresenter) {
                 <TokenContainer
                   balance={props.balance}
                   symbol={props.symbol}
-                  tokenId={props.tokenId}
+                  // tokenId={props.tokenId}
+                  userNm={props.userNm}
+                  userinfo={props.userinfo}
                 />
               </div>
             )}

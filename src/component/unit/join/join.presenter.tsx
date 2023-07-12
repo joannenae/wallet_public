@@ -132,6 +132,7 @@ export default function JoinPresenter(props: IJoinPresenter) {
                     type={props.visible ? "text" : "password"}
                     placeholder="비밀번호"
                     {...props.register("pwCheck")}
+                    disabled={!props.watch("pw")}
                   />
                   <div
                     style={{

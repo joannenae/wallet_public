@@ -1,34 +1,73 @@
 import { ChangeEvent, Dispatch, SetStateAction } from "react";
 
 export interface IAccountContainer {
+  walletMain: () => void;
   setAccountActive: Dispatch<SetStateAction<boolean>>;
+  chainId: string;
   userinfo: {
-    name: string;
-    userId: number;
+    userName: string;
     userNet: [
       {
-        chainID: string;
+        chainId: string;
+        explorer: string;
         networkId: number;
-        networkNm: string;
+        networkName: string;
         networkType: string;
+        rpcUrl: string;
+        userNetId: number;
       }
     ];
-    wallet: [
+    wallets: [
       {
         address: string;
-        deFlag: string;
-        walletId: number;
-        walletNm: string;
-        token: [
+        defFlag: string;
+        delFlag: string;
+        hdPath: string;
+        privateKey: string;
+        publicKey: string;
+        userId: number;
+        userToken: [
           {
             balance: string;
             symbol: string;
-            tokenId: number;
+            tokenSym: string;
           }
         ];
+        walletId: number;
+        walletName: string;
       }
     ];
   };
+  token: string;
+  // userinfo: {
+  //   name: string;
+  //   userNet: [
+  //     {
+  //       chainID: string;
+  //       networkId: number;
+  //       networkNm: string;
+  //       networkType: string;
+  //     }
+  //   ];
+  //   wallets: [
+  //     {
+  //       address: string;
+  //       defFlag: string;
+  //       delFlag: string;
+  //       hdPath: string;
+  //       privateKey: string;
+  //       publicKey: string;
+  //       userId: number;
+  //       userToken: [
+  //         {
+  //           balance: string;
+  //         }
+  //       ];
+  //       walletId: number;
+  //       walletName: string;
+  //     }
+  //   ];
+  // };
 }
 export interface IAccountPresenter {
   status: string;
@@ -80,32 +119,75 @@ export interface IAccountPresenter {
   privatekey: string;
   keypassword: string;
   num: string;
-
   userinfo: {
-    name: string;
-    userId: number;
+    userName: string;
     userNet: [
       {
-        chainID: string;
+        chainId: string;
+        explorer: string;
         networkId: number;
-        networkNm: string;
+        networkName: string;
         networkType: string;
+        rpcUrl: string;
+        userNetId: number;
       }
     ];
-    wallet: [
+    wallets: [
       {
         address: string;
-        deFlag: string;
-        walletId: number;
-        walletNm: string;
-        token: [
+        defFlag: string;
+        delFlag: string;
+        hdPath: string;
+        privateKey: string;
+        publicKey: string;
+        userId: number;
+        userToken: [
           {
             balance: string;
             symbol: string;
-            tokenId: number;
+            tokenSym: string;
           }
         ];
+        walletId: number;
+        walletName: string;
       }
     ];
   };
+  // userinfo: {
+  //   userName: string;
+  //   userNet: [
+  //     {
+  //       chainID: string;
+  //       networkId: number;
+  //       networkNm: string;
+  //       networkType: string;
+  //     }
+  //   ];
+  //   wallets: [
+  //     {
+  //       address: string;
+  //       defFlag: string;
+  //       delFlag: string;
+  //       hdPath: string;
+  //       privateKey: string;
+  //       publicKey: string;
+  //       userId: number;
+  //       userToken: [
+  //         {
+  //           balance: string;
+  //           tokens: {
+  //             tokenSym: string;
+  //           };
+  //         }
+  //       ];
+  //       walletId: number;
+  //       walletName: string;
+  //     }
+  //   ];
+  // };
+
+  onClickDeleteWallet: (walletId: number) => void;
+  onClickWallet: (walletId: number) => void;
+  symbol: string;
+  token: string;
 }

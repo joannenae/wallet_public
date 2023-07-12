@@ -1,4 +1,5 @@
 import styled from "@emotion/styled";
+import Select from "react-select";
 
 export const PcTokenHead = styled.div`
   text-align: center;
@@ -21,7 +22,7 @@ export const PcModalInput = styled.input`
   padding: 10px;
   height: 35px;
   font-size: 1.5rem;
-  width: 90%;
+  width: 100%;
   border-radius: 10px;
   border: 1px solid gray;
   ::placeholder {
@@ -30,6 +31,13 @@ export const PcModalInput = styled.input`
   :focus {
     outline: 1px solid black;
   }
+`;
+
+export const StyledSelect = styled(Select)`
+  width: 80%;
+  margin: 0 auto;
+  margin-top: 30px;
+  margin-bottom: 50px;
 `;
 //--------mobile
 
@@ -54,7 +62,7 @@ export const MoModalInput = styled.input`
   padding: 10px;
   height: 30px;
   font-size: 1.2rem;
-  width: 90%;
+  width: 100%;
   border-radius: 5px;
   border: 1px solid gray;
   ::placeholder {

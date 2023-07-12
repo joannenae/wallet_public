@@ -47,6 +47,7 @@ const Layout = ({ children }: Props) => {
     <>
       <TransitionGroup style={{ position: "relative" }}>
         <Transition
+          // @ts-ignore
           key={
             router.pathname === "/getwallet" ||
             router.pathname === "/createwallet"

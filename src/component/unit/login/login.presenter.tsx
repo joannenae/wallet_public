@@ -110,6 +110,7 @@ export default function LoginPresenter(props: ILoginPresenter) {
                     placeholder="비밀번호"
                     type={props.visible ? "text" : "password"}
                     onChange={props.onChangePassword}
+                    onKeyDown={props.handelEnter}
                   />
                   <div style={{ position: "absolute", top: 40, right: 0 }}>
                     <S.PcEye
@@ -122,12 +123,13 @@ export default function LoginPresenter(props: ILoginPresenter) {
                     />
                   </div>
                 </S.PcInputBox>
-                <S.PcLogin
+                <S.PcLog
+                  type="button"
                   onClick={props.onClickLogin}
                   disabled={!props.email || !props.password}
                 >
                   로그인
-                </S.PcLogin>
+                </S.PcLog>
                 <S.PcBottom>
                   <S.PcGo onClick={props.onClickMoveToPage("/find")}>
                     아이디 / 비밀번호 찾기

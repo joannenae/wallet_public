@@ -23,6 +23,21 @@ export default function CreateWalletContainer() {
   const [mnemonic, setMnemonic] = useState([] as any);
   const [hash, setHash] = useState<any | null>(null);
   const [success, setSuccess] = useState(false);
+  const [array] = useState<any>([
+    "1.",
+    "2.",
+    "3.",
+    "4.",
+    "5.",
+    "6.",
+    "7.",
+    "8.",
+    "9.",
+    "10.",
+    "11.",
+    "12.",
+  ]);
+
   const { onClickMoveToPage } = useMovetoPage();
   const router = useRouter();
 
@@ -32,6 +47,7 @@ export default function CreateWalletContainer() {
 
   const prev = () => {
     setCurrent(current - 1);
+    setHash([]);
   };
 
   const items = steps.map((item) => ({
@@ -68,42 +84,52 @@ export default function CreateWalletContainer() {
       console.log(error);
     }
   };
-
+  const mnemonicArr: string[] = [];
   // 비밀 복구 확인
-  const onChangeMnemonic = (event: ChangeEvent<HTMLInputElement>) => {
-    if (event.target.value) {
-      let value = event.target.value;
-      const arr = [];
-      arr.push(value);
-      let arr2: string[] = [];
-      const word = value.split(" ");
-      word.map((el) => {
-        let first = el.split(".")[1];
-        arr2.push(first);
+  const onChangeMnemonic = (
+    event: ChangeEvent<HTMLInputElement>,
+    i: number
+  ) => {
+    const value = event.target.value;
+    if (value.length < 20) {
+      const tempArr = [...hash];
+      tempArr[i] = value;
+      setHash(tempArr);
+    } else {
+      const temp = value.split(" ");
+      temp.map((el) => {
+        const temp2 = el.split(".")[1];
+        mnemonicArr.push(temp2);
       });
-      const filtered = arr2.filter((arr2) => arr2 !== undefined);
-      setHash(filtered);
+      const filtered = mnemonicArr.filter((arr) => arr !== undefined);
+      setHash([...filtered]);
     }
   };
 
   const onClickCreate = async () => {
     try {
       await axios
-        .post("/v1/wallet/init-wallet", { mnemonic: hash?.toString() })
+        .post("/v1/wallet/init-wallet", {
+          // 배열 -> 문자열 -> 쉼표를 공백으로 치환
+          mnemonic: hash?.toString().replace(/,/gi, " "),
+        })
         .then((response) => {
           console.log(response);
           if (response.data.status === 200) {
             setSuccess(true);
             Modal.success({ content: "지갑이 생성되었습니다." });
           }
-          if (response.data.result === "DB 오류TOKEN") {
-            Modal.error({ content: "지갑 생성에 실패하였습니다." });
+          if (response.data.status === 101) {
+            Modal.error({ content: "유효하지 않은 비밀 복구 구문입니다." });
           }
-          if (response.data.result === "DB 오류") {
-            Modal.error({ content: "지갑 정보 저장 오류" });
+          if (response.data.status === 500) {
+            Modal.error({ content: "토큰 정보 추가 실패." });
+          }
+          if (response.data.status === 501) {
+            Modal.error({ content: "통신 오류." });
           }
           if (response.data.status === 300) {
-            Modal.error({ content: "예상치 못한 오류입니다." });
+            Modal.error({ content: "예상치 못한 오류." });
           }
           if (response.data.status === 301) {
             Modal.error({
@@ -132,6 +158,7 @@ export default function CreateWalletContainer() {
       hash={hash}
       onClickCreate={onClickCreate}
       success={success}
+      array={array}
     />
   );
 }

@@ -18,166 +18,233 @@ export default function HeaderPresenter(props: IHeaderPresenter) {
       fontSize: 11,
     },
   }));
+
   return (
     <>
       <Mobile>
         <S.MoHeader>
-          <S.MoLogo onClick={props.onClickMoveToPage("/main")}>
-            DreamWallet
-          </S.MoLogo>
+          <S.MoLogo onClick={props.onClickMain}>DreamWallet</S.MoLogo>
+          <S.MoHeaderContract onClick={props.onClickMoveToPage("/contracts")}>
+            ＋ Smart Contracts
+          </S.MoHeaderContract>
           <S.MoHeaderRight>
-            <S.MoNetCirBox>
-              <S.MoActive onClick={props.onClickActive}>
-                <S.MoCir>●</S.MoCir>
-                <S.MoNet>Baobab 테스트넷</S.MoNet>
-                <div>
-                  {props.active ? (
-                    <img
-                      src="/image/sortup.png"
-                      style={{ width: "38%", marginLeft: 5 }}
-                    />
-                  ) : (
-                    <img
-                      src="/image/sortdown.png"
-                      style={{ width: "38%", marginLeft: 5 }}
-                    />
-                  )}
+            {router.pathname === "/contracts" ? (
+              <></>
+            ) : (
+              <>
+                <div
+                  style={{
+                    fontSize: "1.5rem",
+                    fontWeight: "500",
+                    letterSpacing: 1.3,
+                    background: "#fffdf2",
+                  }}
+                >
+                  {props?.userinfo?.userInfo?.userName} 님
                 </div>
-              </S.MoActive>
-              {props.active && (
-                <S.MoNetBox>
-                  <div
-                    style={{
-                      overflowY: "scroll",
-                    }}
-                  >
-                    <S.MoNetlist>
-                      <S.MoListCir>●</S.MoListCir>
-                      <S.MoList>메인넷</S.MoList>
-                    </S.MoNetlist>
-                    <S.MoNetAdd
-                      onClick={() => {
-                        router.push("/network");
-                        props.onClickNetWork();
-                      }}
-                    >
-                      ＋ 네트워크 추가
-                    </S.MoNetAdd>
-                  </div>
-                </S.MoNetBox>
-              )}
-            </S.MoNetCirBox>
-            <S.PcAccount>
-              <img
-                src="/image/user.png"
-                style={{ width: "40%", marginLeft: 45 }}
-                onClick={props.onClickAccountActive}
-              />
-              {props.accountActive && (
-                <S.MoAccountActive>
-                  <AccountContainer
-                    setAccountActive={props.setAccountActive}
-                    userinfo={props.userinfo}
+                <S.MoNetCirBox>
+                  <S.MoActive onClick={props.onClickActive}>
+                    <S.MoCir>●</S.MoCir>
+                    <S.MoNet>
+                      {Object.keys(router.query).length === 0 ||
+                      !router.query.networkName
+                        ? props?.userinfo?.userNet[0]?.networkName
+                        : router.query.networkName}
+                    </S.MoNet>
+
+                    <div>
+                      {props.active ? (
+                        <img
+                          src="/image/sortup.png"
+                          style={{ width: "38%", marginLeft: 5 }}
+                        />
+                      ) : (
+                        <img
+                          src="/image/sortdown.png"
+                          style={{ width: "38%", marginLeft: 5 }}
+                        />
+                      )}
+                    </div>
+                  </S.MoActive>
+                  {props.active && (
+                    <S.MoNetBox>
+                      <div>
+                        {props.userinfo?.userNet?.map((el) => {
+                          return (
+                            <S.MoNetlist
+                              onClick={() => {
+                                props.onClickNetList(
+                                  el.chainId,
+                                  el.networkName,
+                                  el.explorer
+                                );
+                              }}
+                            >
+                              <>
+                                <S.MoListCir>●</S.MoListCir>
+                                <S.MoList>{el.networkName}</S.MoList>
+                              </>
+                            </S.MoNetlist>
+                          );
+                        })}
+                        <S.MoNetAdd
+                          onClick={() => {
+                            props.onClickNetWork();
+                          }}
+                        >
+                          ＋ 네트워크 추가
+                        </S.MoNetAdd>
+                      </div>
+                    </S.MoNetBox>
+                  )}
+                </S.MoNetCirBox>
+                <S.PcAccount>
+                  <img
+                    src="/image/user.png"
+                    style={{ width: "27%", marginLeft: 30 }}
+                    // style={{ width: "27%", margin: "0 auto" }}
+                    onClick={props.onClickAccountActive}
                   />
-                </S.MoAccountActive>
-              )}
-            </S.PcAccount>
+                  {props.accountActive && (
+                    <S.MoAccountActive>
+                      <AccountContainer
+                        setAccountActive={props.setAccountActive}
+                        // @ts-ignore
+                        userinfo={props.userinfo}
+                        walletMain={props.walletMain}
+                        chainId={props.chainId}
+                        token={props.token}
+                        // networkName={props.networkName}
+                      />
+                    </S.MoAccountActive>
+                  )}
+                </S.PcAccount>
+                <LightTooltip title="로그아웃">
+                  {/* <div>Logout</div> */}
+                  <img
+                    src="/image/logout.png"
+                    style={{ height: 20, cursor: "pointer" }}
+                    onClick={props.onClickLogOut}
+                  />
+                </LightTooltip>
+              </>
+            )}
           </S.MoHeaderRight>
         </S.MoHeader>
       </Mobile>
       <PC>
         <S.PcHeader>
-          <S.PcLogo onClick={props.onClickMoveToPage("/main")}>
-            DreamWallet
-          </S.PcLogo>
+          <S.PcHeaderFlex>
+            <S.PcLogo onClick={props.onClickMain}>DreamWallet</S.PcLogo>
+            <S.PcHeaderContract onClick={props.onClickMoveToPage("/contracts")}>
+              ＋ Smart Contracts
+            </S.PcHeaderContract>
+          </S.PcHeaderFlex>
           <S.PcHeaderRight>
-            <div
-              style={{
-                fontSize: "1.8rem",
-                fontWeight: "500",
-                letterSpacing: 3,
-                background: "#fffdf2",
-              }}
-            >
-              {props.userinfo.name} 님
-            </div>
-            <S.PcNetCirBox>
-              <S.PcActive onClick={props.onClickActive}>
-                <S.PcCir>●</S.PcCir>
-                {props.userinfo?.userNet?.map((el) => {
-                  return (
-                    <>
-                      <S.PcNet>{el.networkType}</S.PcNet>
-                    </>
-                  );
-                })}
-                <div>
-                  {props.active ? (
-                    <img
-                      src="/image/sortup.png"
-                      style={{ width: "38%", marginLeft: 7 }}
-                    />
-                  ) : (
-                    <img
-                      src="/image/sortdown.png"
-                      style={{ width: "38%", marginLeft: 7 }}
-                    />
-                  )}
+            {router.pathname === "/contracts" ? (
+              <></>
+            ) : (
+              <>
+                <div
+                  style={{
+                    fontSize: "1.8rem",
+                    fontWeight: "500",
+                    letterSpacing: 1.3,
+                    background: "#fffdf2",
+                  }}
+                >
+                  {props?.userinfo?.userInfo?.userName} 님
                 </div>
-              </S.PcActive>
-              {/* 네트워크 */}
-              {props.active && (
-                <S.PcNetBox>
-                  <div
-                    style={{
-                      position: "relative",
-                      height: 200,
-                    }}
-                  >
-                    <S.PcNetlist>
-                      <S.PcListCir>●</S.PcListCir>
-                      {props.userinfo?.userNet?.map((el) => {
-                        return (
-                          <>
-                            <S.PcList>{el.networkType}</S.PcList>
-                          </>
-                        );
-                      })}
-                    </S.PcNetlist>
-                    <S.PcNetAdd
-                      onClick={() => {
-                        router.push("/network");
-                        props.onClickNetWork();
-                      }}
-                    >
-                      ＋ 네트워크 추가
-                    </S.PcNetAdd>
-                  </div>
-                </S.PcNetBox>
-              )}
-            </S.PcNetCirBox>
-            <S.PcAccount>
-              <img
-                src="/image/user.png"
-                style={{ width: "30%" }}
-                onClick={props.onClickAccountActive}
-              />
-              {props.accountActive && (
-                <S.PcAccountActive>
-                  <AccountContainer
-                    setAccountActive={props.setAccountActive}
-                    userinfo={props.userinfo}
+                <S.PcNetCirBox>
+                  <S.PcActive onClick={props.onClickActive}>
+                    <S.PcCir>●</S.PcCir>{" "}
+                    {/* router 쿼리에 데이터 담은 후 데이터가 있으면 선택한 network , 없으면 default network */}
+                    <S.PcNet>
+                      {Object.keys(router.query).length === 0 ||
+                      !router.query.networkName
+                        ? props?.userinfo?.userNet[0]?.networkName
+                        : router.query.networkName}
+                    </S.PcNet>
+                    <div>
+                      {props.active ? (
+                        <img
+                          src="/image/sortup.png"
+                          style={{ width: "38%", marginLeft: 7 }}
+                        />
+                      ) : (
+                        <img
+                          src="/image/sortdown.png"
+                          style={{ width: "38%", marginLeft: 7 }}
+                        />
+                      )}
+                    </div>
+                  </S.PcActive>
+                  {props.active && (
+                    <S.PcNetBox>
+                      <div
+                        style={{
+                          position: "relative",
+                          height: 200,
+                        }}
+                      >
+                        {props.userinfo?.userNet?.map((el) => {
+                          return (
+                            <S.PcNetlist
+                              onClick={() => {
+                                props.onClickNetList(
+                                  el.chainId,
+                                  el.networkName,
+                                  el.explorer
+                                );
+                              }}
+                            >
+                              <>
+                                <S.PcListCir>●</S.PcListCir>
+                                <S.PcList>{el.networkName}</S.PcList>
+                              </>
+                            </S.PcNetlist>
+                          );
+                        })}
+                        <S.PcNetAdd
+                          onClick={() => {
+                            props.onClickNetWork();
+                          }}
+                        >
+                          ＋ 네트워크 추가
+                        </S.PcNetAdd>
+                      </div>
+                    </S.PcNetBox>
+                  )}
+                </S.PcNetCirBox>
+                <S.PcAccount>
+                  <S.PcUser
+                    src="/image/user.png"
+                    onClick={props.onClickAccountActive}
                   />
-                </S.PcAccountActive>
-              )}
-            </S.PcAccount>
-            <LightTooltip title="로그아웃">
-              <img
-                src="/image/logout.png"
-                style={{ width: 30, cursor: "pointer" }}
-                onClick={props.onClickLogOut}
-              />
-            </LightTooltip>
+                  {props.accountActive && (
+                    <S.PcAccountActive>
+                      <AccountContainer
+                        setAccountActive={props.setAccountActive}
+                        // @ts-ignore
+                        userinfo={props.userinfo}
+                        walletMain={props.walletMain}
+                        chainId={props.chainId}
+                        token={props.token}
+                        // networkName={props.networkName}
+                      />
+                    </S.PcAccountActive>
+                  )}
+                </S.PcAccount>
+                <LightTooltip title="로그아웃">
+                  {/* <div>Logout</div> */}
+                  <img
+                    src="/image/logout.png"
+                    style={{ width: 30, cursor: "pointer" }}
+                    onClick={props.onClickLogOut}
+                  />
+                </LightTooltip>
+              </>
+            )}
           </S.PcHeaderRight>
         </S.PcHeader>
       </PC>

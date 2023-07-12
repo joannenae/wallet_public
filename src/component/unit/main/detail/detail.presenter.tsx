@@ -43,7 +43,7 @@ export default function DetailPresenter(props: IDetailPresenter) {
             >
               {/* 받아오는 계정 명을 defaultValue에 넣어줘야 수정 가능 */}
               <S.MoEditInput
-                defaultValue="attosiss"
+                defaultValue={props.userNm}
                 style={{
                   height: 30,
                   padding: 10,
@@ -51,9 +51,10 @@ export default function DetailPresenter(props: IDetailPresenter) {
                   borderRadius: "15px",
                   border: "1px solid gray",
                 }}
+                onChange={props.onChangeEditName}
               />
               <div>
-                <S.MoEditName>수정</S.MoEditName>
+                <S.MoEditName onClick={props.onClickEdit}>수정</S.MoEditName>
                 <S.MoEditCancel onClick={props.onChangeCancel}>
                   취소
                 </S.MoEditCancel>
@@ -69,7 +70,7 @@ export default function DetailPresenter(props: IDetailPresenter) {
                   marginTop: 20,
                 }}
               >
-                attosiss
+                {props.change === false ? props.userNm : props.edit}
               </div>
               <img
                 onClick={props.onChangeEdit}
@@ -86,10 +87,7 @@ export default function DetailPresenter(props: IDetailPresenter) {
             marginTop: 20,
           }}
         >
-          <QRCode
-            value="0xeccfe9da751317921ef767d2a96975188bfe3d96"
-            style={{ margin: "0 auto" }}
-          />
+          <QRCode value={props.address} style={{ margin: "0 auto" }} />
         </div>
         <LightTooltip title={props.isCopy ? "Success!" : "Paste!"}>
           <S.MoModalAddress onClick={() => props.handleCopyClipBoard(arr)}>
@@ -135,7 +133,7 @@ export default function DetailPresenter(props: IDetailPresenter) {
               textAlign: "center",
             }}
           >
-            attosiss
+            {props.userNm}
           </div>
           <div
             style={{
@@ -146,7 +144,7 @@ export default function DetailPresenter(props: IDetailPresenter) {
               fontSize: "1.2rem",
             }}
           >
-            0x7168BD1A2340994430310f7d184450A596B3177c
+            {props.address}
           </div>
           <div
             style={{
@@ -192,10 +190,11 @@ export default function DetailPresenter(props: IDetailPresenter) {
                 fontSize: "1.2rem",
                 padding: 10,
                 marginBottom: 30,
-                border: "1px solid red",
+                borderRadius: 10,
+                border: "1px solid lightgray",
               }}
             >
-              비공개키 들어감
+              {props.privatekey}
             </div>
           ) : (
             <div style={{ marginBottom: 20 }}>
@@ -209,6 +208,7 @@ export default function DetailPresenter(props: IDetailPresenter) {
                 }}
                 onChange={props.onChangePassword}
               />
+              <S.PcError>{props.error}</S.PcError>
               <Button
                 type="primary"
                 disabled={!props.password}
@@ -313,7 +313,6 @@ export default function DetailPresenter(props: IDetailPresenter) {
                 {/* 받아오는 계정 명을 defaultValue에 넣어줘야 수정 가능 */}
                 <S.PcEditInput
                   defaultValue={props.userNm}
-                  value={props.edit}
                   style={{
                     height: 30,
                     padding: 10,
@@ -337,7 +336,7 @@ export default function DetailPresenter(props: IDetailPresenter) {
                     marginTop: 20,
                   }}
                 >
-                  {props.change === false ? props.edit : props.userNm}
+                  {props.change === false ? props.userNm : props.edit}
                 </div>
                 <img
                   src="/image/edit.png"
@@ -470,23 +469,27 @@ export default function DetailPresenter(props: IDetailPresenter) {
               </div>
             ) : (
               <>
-                <Input.Password
-                  style={{
-                    width: "80%",
-                    height: 40,
-                    fontSize: "1.5rem",
-                    padding: 10,
-                  }}
-                  onChange={props.onChangePassword}
-                />
+                <div style={{ display: "flex" }}>
+                  <>
+                    <Input.Password
+                      style={{
+                        width: "80%",
+                        height: 40,
+                        fontSize: "1.5rem",
+                        padding: 10,
+                      }}
+                      onChange={props.onChangePassword}
+                    />
+                    <Button
+                      type="primary"
+                      disabled={!props.password}
+                      onClick={props.onClickPassword}
+                    >
+                      확인
+                    </Button>{" "}
+                  </>
+                </div>
                 <S.PcError>{props.error}</S.PcError>
-                <Button
-                  type="primary"
-                  disabled={!props.password}
-                  onClick={props.onClickPassword}
-                >
-                  확인
-                </Button>{" "}
               </>
             )}
 
@@ -497,6 +500,7 @@ export default function DetailPresenter(props: IDetailPresenter) {
                 background: "#fffdf2",
                 color: "#DD5757",
                 textAlign: "center",
+                marginTop: 20,
               }}
             >
               경고: 이 키를 노출하지 마세요! <br />

@@ -22,6 +22,8 @@ export const PcAccountContainer = styled.li`
 export const PcAccountName = styled.div`
   color: #0c70f2;
   font-weight: 600;
+  display: flex;
+  align-items: end;
 `;
 export const PcAccountAmount = styled.div`
   margin-top: 2%;
@@ -31,14 +33,13 @@ export const PcAccountAmount = styled.div`
 
 export const PcAccountFooter = styled.div`
   display: flex;
-  height: 15%;
+  align-items: center;
   justify-content: space-between;
   width: 90%;
   margin: 0 auto;
   position: absolute;
-  bottom: 0;
+  bottom: 10px;
   left: 5%;
-  margin-bottom: 7%;
 `;
 export const PcAccountButton = styled.div`
   width: 30%;

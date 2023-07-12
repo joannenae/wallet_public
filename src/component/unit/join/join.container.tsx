@@ -20,7 +20,7 @@ const schema = yup.object({
   pwCheck: yup
     .string()
     .nullable()
-    .oneOf([yup.ref("pw"), null], "비밀번호가 일치하지 않습니다")
+    .oneOf([yup.ref("pw")], "비밀번호가 일치하지 않습니다")
     .required("비밀번호를 확인하세요."),
 });
 
@@ -38,7 +38,7 @@ export default function JoinContainer() {
     setVisible((prev) => !prev);
   };
 
-  const { register, handleSubmit, formState } = useForm<IFormValues>({
+  const { register, handleSubmit, formState, watch } = useForm<IFormValues>({
     resolver: yupResolver(schema),
     mode: "onChange",
   });
@@ -106,7 +106,7 @@ export default function JoinContainer() {
                 });
               }, 1000);
             }
-            if (response.data.status === 101) {
+            if (response.data.status === 500) {
               Modal.error({ content: "DB 저장 오류." });
             }
             if (response.data.status === 300) {
@@ -136,6 +136,7 @@ export default function JoinContainer() {
       status={status}
       onClickVisible={onClickVisible}
       visible={visible}
+      watch={watch}
     />
   );
 }

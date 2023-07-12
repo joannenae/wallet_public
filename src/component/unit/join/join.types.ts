@@ -3,6 +3,7 @@ import {
   FormState,
   UseFormHandleSubmit,
   UseFormRegister,
+  UseFormWatch,
 } from "react-hook-form";
 
 export interface IFormValues {
@@ -11,6 +12,7 @@ export interface IFormValues {
 }
 
 export interface IJoinPresenter {
+  watch: any;
   email: string;
   name: string;
   active: boolean;

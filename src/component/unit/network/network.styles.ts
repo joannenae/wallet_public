@@ -97,10 +97,18 @@ export const PcInput = styled.input`
   border: 1px solid gray;
   border-radius: 7px;
   padding: 10px;
-  font-size: 1.5rem;
+  font-size: 1.3rem;
   :focus {
     outline: 1px solid black;
   }
+  :disabled {
+    background-color: gainsboro;
+  }
+`;
+// 네트워크 리스트 선택 모달
+export const PcNetDiv = styled.div`
+  font-weight: 650;
+  padding-top: 10px;
 `;
 
 // --------------------mobile
@@ -121,7 +129,7 @@ export const MoHeader = styled.div`
   padding: 30px 0px 20px 0px;
 `;
 export const MoLeft = styled.div`
-  font-size: 1.7rem;
+  font-size: 1.5rem;
   color: #0c70f2;
   font-weight: 600;
 `;

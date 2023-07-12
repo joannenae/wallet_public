@@ -60,7 +60,9 @@ export const globalStyles = css`
   }
 
   //
-  :where(.css-dev-only-do-not-override-ixblex).ant-select-single:not(.ant-select-customize-input)
+  :where(.css-dev-only-do-not-override-ixblex).ant-select-single:not(
+      .ant-select-customize-input
+    )
     .ant-select-selector {
     width: 100%;
     height: 30px;
@@ -101,7 +103,9 @@ export const globalStyles = css`
   .ant-select-item-option-content {
     font-size: 1.4rem;
   }
-  .ant-select-show-search:where(.css-dev-only-do-not-override-ixblex).ant-select:not(.ant-select-customize-input)
+  .ant-select-show-search:where(
+      .css-dev-only-do-not-override-ixblex
+    ).ant-select:not(.ant-select-customize-input)
     .ant-select-selector
     input {
     cursor: auto;
@@ -117,10 +121,26 @@ export const globalStyles = css`
     + .ant-tabs-tab {
     margin: 0 0 0 100px;
   }
+  // radio
+  :where(.css-dev-only-do-not-override-ixblex).ant-radio-wrapper
+    span.ant-radio
+    + * {
+    font-size: 1.5rem;
+    padding-inline-start: 8px;
+    padding-inline-end: 8px;
+  }
   @font-face {
     font-family: "globalfont";
     src: url("/font/Raleway-VariableFont_wght.ttf");
   }
-
+  // antd select placeholder fontsize
+  .css-1jqq78o-placeholder {
+    grid-area: 1/1/2/3;
+    color: hsl(0, 0%, 50%);
+    margin-left: 2px;
+    margin-right: 2px;
+    box-sizing: border-box;
+    font-size: 13px;
+  }
   // ----
 `;

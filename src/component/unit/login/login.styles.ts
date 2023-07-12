@@ -159,6 +159,22 @@ export const PcGo = styled.div`
   cursor: pointer;
 `;
 
+export const PcLog = styled.button`
+  margin-top: 50px;
+  border: none;
+  height: 50px;
+  border-radius: 25px;
+  background-color: #0c70f2;
+  color: white;
+  font-size: 1.8rem;
+  cursor: pointer;
+  :disabled {
+    background-color: gainsboro;
+    border: none;
+    color: white;
+  }
+`;
+
 //mobile ------------------------------------------------------
 
 export const MobileMain = styled.div`

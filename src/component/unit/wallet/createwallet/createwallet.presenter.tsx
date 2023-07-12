@@ -5,6 +5,7 @@ import { styled } from "@mui/material/styles";
 import { Button, Steps } from "antd";
 import { v4 as uuidv4 } from "uuid";
 import { ICreatePresenter } from "./createwallet.types";
+import { useState } from "react";
 
 export default function CreateWalletPresenter(props: ICreatePresenter) {
   const LightTooltip = styled(({ className, ...props }: TooltipProps) => (
@@ -18,7 +19,6 @@ export default function CreateWalletPresenter(props: ICreatePresenter) {
       fontSize: 12,
     },
   }));
-
   return (
     <>
       <Mobile>
@@ -37,7 +37,6 @@ export default function CreateWalletPresenter(props: ICreatePresenter) {
             {props.current === 1 && <S.MoText>비밀 백업 구문 확인</S.MoText>}
             {props.current === 2 && <S.MoText>지갑 생성 완료 !</S.MoText>}
           </S.MoHeader>
-
           <S.MoContent>
             <>
               {props.current === 0 && (
@@ -56,18 +55,30 @@ export default function CreateWalletPresenter(props: ICreatePresenter) {
                   </div>
                   {/*   배열로 바꾼 뒤 map 돌려서 해당 index로 들어가게끔 */}
                   <S.MoPwCenter>
-                    <S.MoPwItem> 1.east</S.MoPwItem>
-                    <S.MoPwItem> 2.east</S.MoPwItem>
-                    <S.MoPwItem> 3.east</S.MoPwItem>
-                    <S.MoPwItem> 4.east</S.MoPwItem>
-                    <S.MoPwItem> 5.east</S.MoPwItem>
-                    <S.MoPwItem> 6.east</S.MoPwItem>
-                    <S.MoPwItem> 7.east</S.MoPwItem>
-                    <S.MoPwItem> 8.east</S.MoPwItem>
-                    <S.MoPwItem> 9.east</S.MoPwItem>
-                    <S.MoPwItem> 10.east</S.MoPwItem>
-                    <S.MoPwItem> 11.east</S.MoPwItem>
-                    <S.MoPwItem> 12.east</S.MoPwItem>
+                    {props.blur === true ? (
+                      props.mnemonic?.map((el, i) => {
+                        return (
+                          <S.MoPwItem key={uuidv4()}>
+                            {i + 1}.{el}
+                          </S.MoPwItem>
+                        );
+                      })
+                    ) : (
+                      <>
+                        <S.MoPwItem> 1.east</S.MoPwItem>
+                        <S.MoPwItem> 2.east</S.MoPwItem>
+                        <S.MoPwItem> 3.east</S.MoPwItem>
+                        <S.MoPwItem> 4.east</S.MoPwItem>
+                        <S.MoPwItem> 5.east</S.MoPwItem>
+                        <S.MoPwItem> 6.east</S.MoPwItem>
+                        <S.MoPwItem> 7.east</S.MoPwItem>
+                        <S.MoPwItem> 8.east</S.MoPwItem>
+                        <S.MoPwItem> 9.east</S.MoPwItem>
+                        <S.MoPwItem> 10.east</S.MoPwItem>
+                        <S.MoPwItem> 11.east</S.MoPwItem>
+                        <S.MoPwItem> 12.east</S.MoPwItem>
+                      </>
+                    )}
                   </S.MoPwCenter>
                   {/* 블러 처리 */}
                   {props.blur === false && (
@@ -93,186 +104,27 @@ export default function CreateWalletPresenter(props: ICreatePresenter) {
                       구문을 적어 올바른지 확인해주세요.
                     </div>
                     <S.MoCheckBox>
-                      <S.MoCheckDiv>
-                        <div
-                          style={{
-                            fontSize: "1.5rem",
-                            width: "5%",
-                          }}
-                        >
-                          1.
-                        </div>
-                        <S.MoCheckInput
-                          type="text"
-                          onChange={props.onChangeMnemonic}
-                          value={props?.hash?.[0]}
-                        />
-                      </S.MoCheckDiv>
-                      <S.MoCheckDiv>
-                        <div
-                          style={{
-                            fontSize: "1.5rem",
-                            width: "5%",
-                          }}
-                        >
-                          2.
-                        </div>
-                        <S.MoCheckInput
-                          type="text"
-                          onChange={props.onChangeMnemonic}
-                          value={props?.hash?.[1]}
-                        />
-                      </S.MoCheckDiv>
-                      <S.MoCheckDiv>
-                        <div
-                          style={{
-                            fontSize: "1.5rem",
-                            width: "5%",
-                          }}
-                        >
-                          3.
-                        </div>
-                        <S.MoCheckInput
-                          type="text"
-                          onChange={props.onChangeMnemonic}
-                          value={props?.hash?.[2]}
-                        />
-                      </S.MoCheckDiv>
-                      <S.MoCheckDiv>
-                        <div
-                          style={{
-                            fontSize: "1.5rem",
-                            width: "5%",
-                          }}
-                        >
-                          4.
-                        </div>
-                        <S.MoCheckInput
-                          type="text"
-                          onChange={props.onChangeMnemonic}
-                          value={props?.hash?.[3]}
-                        />
-                      </S.MoCheckDiv>
-                      <S.MoCheckDiv>
-                        <div
-                          style={{
-                            fontSize: "1.5rem",
-                            width: "5%",
-                          }}
-                        >
-                          5.
-                        </div>
-                        <S.MoCheckInput
-                          type="text"
-                          onChange={props.onChangeMnemonic}
-                          value={props?.hash?.[4]}
-                        />
-                      </S.MoCheckDiv>
-                      <S.MoCheckDiv>
-                        <div
-                          style={{
-                            fontSize: "1.5rem",
-                            width: "5%",
-                          }}
-                        >
-                          6.
-                        </div>
-                        <S.MoCheckInput
-                          type="text"
-                          onChange={props.onChangeMnemonic}
-                          value={props?.hash?.[5]}
-                        />
-                      </S.MoCheckDiv>
-                      <S.MoCheckDiv>
-                        <div
-                          style={{
-                            fontSize: "1.5rem",
-                            width: "5%",
-                          }}
-                        >
-                          7.
-                        </div>
-                        <S.MoCheckInput
-                          type="text"
-                          onChange={props.onChangeMnemonic}
-                          value={props?.hash?.[6]}
-                        />
-                      </S.MoCheckDiv>
-                      <S.MoCheckDiv>
-                        <div
-                          style={{
-                            fontSize: "1.5rem",
-                            width: "5%",
-                          }}
-                        >
-                          8.
-                        </div>
-                        <S.MoCheckInput
-                          type="text"
-                          onChange={props.onChangeMnemonic}
-                          value={props?.hash?.[7]}
-                        />
-                      </S.MoCheckDiv>
-                      <S.MoCheckDiv>
-                        <div
-                          style={{
-                            fontSize: "1.5rem",
-                            width: "5%",
-                          }}
-                        >
-                          9.
-                        </div>
-                        <S.MoCheckInput
-                          type="text"
-                          onChange={props.onChangeMnemonic}
-                          value={props?.hash?.[8]}
-                        />
-                      </S.MoCheckDiv>
-                      <S.MoCheckDiv>
-                        <div
-                          style={{
-                            fontSize: "1.5rem",
-                            width: "5%",
-                          }}
-                        >
-                          10.
-                        </div>
-                        <S.MoCheckInput
-                          type="text"
-                          onChange={props.onChangeMnemonic}
-                          value={props?.hash?.[9]}
-                        />
-                      </S.MoCheckDiv>
-                      <S.MoCheckDiv>
-                        <div
-                          style={{
-                            fontSize: "1.5rem",
-                            width: "5%",
-                          }}
-                        >
-                          11.
-                        </div>
-                        <S.MoCheckInput
-                          type="text"
-                          onChange={props.onChangeMnemonic}
-                          value={props?.hash?.[10]}
-                        />
-                      </S.MoCheckDiv>
-                      <S.MoCheckDiv>
-                        <div
-                          style={{
-                            fontSize: "1.5rem",
-                            width: "5%",
-                          }}
-                        >
-                          12.
-                        </div>
-                        <S.MoCheckInput
-                          type="text"
-                          onChange={props.onChangeMnemonic}
-                          value={props?.hash?.[11]}
-                        />
-                      </S.MoCheckDiv>
+                      {props.array.map((el, i) => {
+                        return (
+                          <S.MoCheckDiv key={i}>
+                            <div
+                              style={{
+                                fontSize: "1.5rem",
+                                width: "5%",
+                              }}
+                            >
+                              {el}
+                            </div>
+                            <S.MoCheckInput
+                              type="text"
+                              onChange={(e) => {
+                                props.onChangeMnemonic(e, i);
+                              }}
+                              value={props?.hash?.[i]}
+                            />
+                          </S.MoCheckDiv>
+                        );
+                      })}
                     </S.MoCheckBox>
                   </S.MoPwBox>
                 </>
@@ -438,186 +290,27 @@ export default function CreateWalletPresenter(props: ICreatePresenter) {
                       구문을 적어 올바른지 확인해주세요.
                     </div>
                     <S.PcCheckBox>
-                      <S.PcCheckDiv>
-                        <div
-                          style={{
-                            fontSize: "2rem",
-                            width: "5%",
-                          }}
-                        >
-                          1.
-                        </div>
-                        <S.PcCheckInput
-                          type="text"
-                          onChange={props.onChangeMnemonic}
-                          value={props?.hash?.[0]}
-                        />
-                      </S.PcCheckDiv>
-                      <S.PcCheckDiv>
-                        <div
-                          style={{
-                            fontSize: "2rem",
-                            width: "5%",
-                          }}
-                        >
-                          2.
-                        </div>
-                        <S.PcCheckInput
-                          type="text"
-                          onChange={props.onChangeMnemonic}
-                          value={props?.hash?.[1]}
-                        />
-                      </S.PcCheckDiv>
-                      <S.PcCheckDiv>
-                        <div
-                          style={{
-                            fontSize: "2rem",
-                            width: "5%",
-                          }}
-                        >
-                          3.
-                        </div>
-                        <S.PcCheckInput
-                          type="text"
-                          onChange={props.onChangeMnemonic}
-                          value={props?.hash?.[2]}
-                        />
-                      </S.PcCheckDiv>
-                      <S.PcCheckDiv>
-                        <div
-                          style={{
-                            fontSize: "2rem",
-                            width: "5%",
-                          }}
-                        >
-                          4.
-                        </div>
-                        <S.PcCheckInput
-                          type="text"
-                          onChange={props.onChangeMnemonic}
-                          value={props?.hash?.[3]}
-                        />
-                      </S.PcCheckDiv>
-                      <S.PcCheckDiv>
-                        <div
-                          style={{
-                            fontSize: "2rem",
-                            width: "5%",
-                          }}
-                        >
-                          5.
-                        </div>
-                        <S.PcCheckInput
-                          type="text"
-                          onChange={props.onChangeMnemonic}
-                          value={props?.hash?.[4]}
-                        />
-                      </S.PcCheckDiv>
-                      <S.PcCheckDiv>
-                        <div
-                          style={{
-                            fontSize: "2rem",
-                            width: "5%",
-                          }}
-                        >
-                          6.
-                        </div>
-                        <S.PcCheckInput
-                          type="text"
-                          onChange={props.onChangeMnemonic}
-                          value={props?.hash?.[5]}
-                        />
-                      </S.PcCheckDiv>
-                      <S.PcCheckDiv>
-                        <div
-                          style={{
-                            fontSize: "2rem",
-                            width: "5%",
-                          }}
-                        >
-                          6.
-                        </div>
-                        <S.PcCheckInput
-                          type="text"
-                          onChange={props.onChangeMnemonic}
-                          value={props?.hash?.[6]}
-                        />
-                      </S.PcCheckDiv>
-                      <S.PcCheckDiv>
-                        <div
-                          style={{
-                            fontSize: "2rem",
-                            width: "5%",
-                          }}
-                        >
-                          8.
-                        </div>
-                        <S.PcCheckInput
-                          type="text"
-                          onChange={props.onChangeMnemonic}
-                          value={props?.hash?.[7]}
-                        />
-                      </S.PcCheckDiv>
-                      <S.PcCheckDiv>
-                        <div
-                          style={{
-                            fontSize: "2rem",
-                            width: "5%",
-                          }}
-                        >
-                          9.
-                        </div>
-                        <S.PcCheckInput
-                          type="text"
-                          onChange={props.onChangeMnemonic}
-                          value={props?.hash?.[8]}
-                        />
-                      </S.PcCheckDiv>
-                      <S.PcCheckDiv>
-                        <div
-                          style={{
-                            fontSize: "2rem",
-                            width: "5%",
-                          }}
-                        >
-                          10.
-                        </div>
-                        <S.PcCheckInput
-                          type="text"
-                          onChange={props.onChangeMnemonic}
-                          value={props?.hash?.[9]}
-                        />
-                      </S.PcCheckDiv>
-                      <S.PcCheckDiv>
-                        <div
-                          style={{
-                            fontSize: "2rem",
-                            width: "5%",
-                          }}
-                        >
-                          11.
-                        </div>
-                        <S.PcCheckInput
-                          type="text"
-                          onChange={props.onChangeMnemonic}
-                          value={props?.hash?.[10]}
-                        />
-                      </S.PcCheckDiv>
-                      <S.PcCheckDiv>
-                        <div
-                          style={{
-                            fontSize: "2rem",
-                            width: "5%",
-                          }}
-                        >
-                          12.
-                        </div>
-                        <S.PcCheckInput
-                          type="text"
-                          onChange={props.onChangeMnemonic}
-                          value={props?.hash?.[11]}
-                        />
-                      </S.PcCheckDiv>
+                      {props.array.map((el, i) => {
+                        return (
+                          <S.PcCheckDiv key={i}>
+                            <div
+                              style={{
+                                fontSize: "2rem",
+                                width: "5%",
+                              }}
+                            >
+                              {el}
+                            </div>
+                            <S.PcCheckInput
+                              type="text"
+                              onChange={(e) => {
+                                props.onChangeMnemonic(e, i);
+                              }}
+                              value={props?.hash?.[i]}
+                            />
+                          </S.PcCheckDiv>
+                        );
+                      })}
                     </S.PcCheckBox>
                   </S.PcPwBox>
                 </>

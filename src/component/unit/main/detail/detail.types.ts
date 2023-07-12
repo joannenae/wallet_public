@@ -46,4 +46,5 @@ export interface IDetailPresenter {
 export interface IDetailContainer {
   userNm: string;
   address: string;
+  walletId: number;
 }

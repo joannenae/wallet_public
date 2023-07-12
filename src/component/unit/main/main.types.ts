@@ -1,3 +1,5 @@
+import { SetStateAction } from "react";
+import { Dispatch } from "react";
 export interface IMainPresenter {
   isModalOpen: boolean;
   showModal: () => void;
@@ -29,10 +31,41 @@ export interface IMainPresenter {
   onClickMoveToPage: (path: string) => () => void;
   address: string;
   userNm: string;
-  userinfo: {};
+  // userinfo: {};
   balance: string;
   symbol: string;
   tokenId: number;
+  walletId: number;
+  trans: any;
+  setTrans: React.Dispatch<React.SetStateAction<any>>;
+  loading: boolean;
+  setAdd: React.Dispatch<React.SetStateAction<boolean>>;
+  setAdr: React.Dispatch<React.SetStateAction<string>>;
+  setBal: React.Dispatch<React.SetStateAction<string>>;
+  adr: string;
+  bal: string;
+
+  add: boolean;
+
+  userinfo: {
+    mainWallet: { userToken: [{ tokenSym: string; balance: string }] };
+  };
+  confirmLoading: boolean;
+  result: {
+    userTokenList: [];
+    tokenList: [];
+  };
+  setFromId: Dispatch<SetStateAction<string>>;
+  setToId: Dispatch<SetStateAction<string>>;
+  setValue: Dispatch<SetStateAction<string>>;
+  check: boolean;
+  swapEstimate: () => void;
+  swapEs: any;
+
+  onChangeToken: (key: string) => void;
+  tokenResult: {};
+  setTokenAdd: React.Dispatch<React.SetStateAction<string>>;
+
   // name: string;
   // userId: number;
   // userNet: [

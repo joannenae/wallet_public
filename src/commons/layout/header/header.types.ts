@@ -9,32 +9,48 @@ export interface IHeaderPresenter {
   setAccountActive: Dispatch<SetStateAction<boolean>>;
   onClickNetWork: () => void;
   userinfo: {
-    name: string;
-    userId: number;
+    userInfo: any;
+    // name: string;
+    // userinfo: {
+    userId: string;
+    userName: string;
+    // };
     userNet: [
       {
-        chainID: string;
+        chainId: string;
+        explorer: string;
         networkId: number;
-        networkNm: string;
+        networkName: string;
         networkType: string;
+        rpcUrl: string;
+        userNetId: number;
       }
     ];
-    wallet: [
+    wallets: [
       {
         address: string;
-        deFlag: string;
-        walletId: number;
-        walletNm: string;
-        token: [
+        defFlag: string;
+        delFlag: string;
+        hdPath: string;
+        privateKey: string;
+        publicKey: string;
+        userId: number;
+        userToken: [
           {
             balance: string;
-            symbol: string;
-            tokenId: number;
           }
         ];
+        walletId: number;
+        walletName: string;
       }
     ];
   };
 
   onClickLogOut: () => void;
+  walletMain: () => void;
+  onClickNetList: (chainId: string, network: string, explorer: string) => void;
+  status: boolean;
+  chainId: string;
+  token: string;
+  onClickMain: () => void;
 }

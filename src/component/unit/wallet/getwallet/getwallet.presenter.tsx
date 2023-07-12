@@ -95,6 +95,7 @@ export default function GetWalletPresenter(props: IGetWalletPresenter) {
                     onChange={(e: ChangeEvent<HTMLInputElement>) => {
                       props.onChangeWord(e, i);
                     }}
+                    value={props?.word?.[i]}
                   />
                 </S.PcCheckDiv>
               );

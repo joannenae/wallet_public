@@ -22,15 +22,28 @@ export default function GetWalletContainer() {
   ]);
 
   const [word, setWord] = useState<any>("");
+
   const { onClickMoveToPage } = useMovetoPage();
   const router = useRouter();
 
-  const onChangeWord = (e: ChangeEvent<HTMLInputElement>, i: number) => {
-    const tempArr = [...word];
-    tempArr[i] = e.target.value;
-    setWord(tempArr);
-  };
+  const mnemonic: string[] = [];
 
+  const onChangeWord = (e: ChangeEvent<HTMLInputElement>, i: number) => {
+    const value = e.target.value;
+    if (value.length < 20) {
+      const tempArr = [...word];
+      tempArr[i] = value;
+      setWord(tempArr);
+    } else {
+      const temp = value.split(" ");
+      temp.map((el) => {
+        const temp2 = el.split(".")[1];
+        mnemonic.push(temp2);
+      });
+      const filtered = mnemonic.filter((arr) => arr !== undefined);
+      setWord([...filtered]);
+    }
+  };
   const onClickGetWallet = async () => {
     if (word) {
       if (word.length === 12) {
@@ -45,22 +58,26 @@ export default function GetWalletContainer() {
         } else {
           try {
             await axios
-              .post("/v1/wallet/create-wallet", {
+              .post("/v1/wallet/init-wallet", {
                 mnemonic: word.toString(),
               })
               .then((response) => {
+                console.log(response.data);
                 if (response.data.status === 200) {
                   Modal.success({ content: "지갑 가져오기 성공 !" });
                   router.push("/main");
                 }
                 if (response.data.status === 101) {
-                  Modal.error({ content: "지갑 가져오기 실패 !" });
+                  Modal.error({ content: "잘못된 복구 구문입니다." });
                 }
-                if (response.data.status === 102) {
-                  Modal.error({ content: "지갑 정보 저장 오류 !" });
+                if (response.data.status === 500) {
+                  Modal.error({ content: "토큰 정보 추가 실패 !" });
                 }
-                if (response.data.status === 103) {
+                if (response.data.status === 501) {
                   Modal.error({ content: "통신 오류 !" });
+                }
+                if (response.data.status === 300) {
+                  Modal.error({ content: "예상치 못한 오류 !" });
                 }
                 if (response.data.status === 301) {
                   Modal.error({

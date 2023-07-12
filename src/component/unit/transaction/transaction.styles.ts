@@ -9,14 +9,14 @@ export const PcTransBox = styled.div`
   margin-top: 2%;
   display: flex;
   flex-direction: column;
-  padding: 1% 4% 0% 4%;
+  padding: 1% 4% 1% 4%;
   cursor: pointer;
   font-size: 2.5rem;
 `;
 
 export const PcTransType = styled.div`
   color: gray;
-  padding-top: 7px;
+  /* padding-top: 7px; */
 `;
 export const PcTransAmount = styled.div`
   font-weight: 600;
@@ -68,10 +68,10 @@ export const MoTransFee = styled.div`
   display: flex;
   justify-content: space-between;
   width: 98%;
-  padding-top: 6%;
+  padding-top: 4%;
 `;
 export const MoTransLog = styled.div`
   display: flex;
   justify-content: space-between;
-  padding-top: 6%;
+  padding-top: 4%;
 `;

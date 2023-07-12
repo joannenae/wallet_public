@@ -6,6 +6,7 @@ export const PcHeader = styled.div`
   text-align: center;
   margin-top: 20px;
   font-weight: 600;
+  color: #0c70f2;
 `;
 export const PcContainer = styled.div`
   width: 90%;
@@ -47,7 +48,8 @@ export const PcToken = styled.div`
 // ---- 수량
 export const PcAmount = styled.div`
   position: relative;
-  width: 150px;
+  /* width: 150px; */
+  width: 50%;
   height: 35px;
   border-radius: 6px;
   border: 1px solid gray;
@@ -62,7 +64,7 @@ export const PcAmountInput = styled.input`
   left: 0;
   padding-top: 3px;
   margin-left: 15px;
-  width: 60%;
+  width: 90%;
   border: none;
   font-size: 1.4rem;
   :focus {

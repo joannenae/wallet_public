@@ -1,12 +1,17 @@
 import { Mobile, PC } from "../../../commons/hooks/mediaquery";
 import * as S from "./account.styles";
-import { Button, Input, Modal, SelectProps } from "antd";
+import { Button, Input, Modal } from "antd";
 import { Tabs } from "antd";
 import { Select } from "antd";
+import { v4 as uuidv4 } from "uuid";
+
 import { IAccountPresenter } from "./account.types";
+import { useRouter } from "next/router";
 const TabPane = Tabs.TabPane;
 
 export default function AccountPresenter(props: IAccountPresenter) {
+  const router = useRouter();
+  // console.log(router);
   return (
     <>
       <Mobile>
@@ -24,14 +29,59 @@ export default function AccountPresenter(props: IAccountPresenter) {
           />
         </S.PcAccountHeaderBox>
         <div style={{ overflowY: "scroll", height: 200 }}>
-          <S.PcAccountContainer>
-            <S.PcAccountName>attosiss</S.PcAccountName>
-            <S.PcAccountAmount>299.616891 KLAY</S.PcAccountAmount>
-          </S.PcAccountContainer>
-          <S.PcAccountContainer>
-            <S.PcAccountName>attosiss</S.PcAccountName>
-            <S.PcAccountAmount>299.616891 KLAY</S.PcAccountAmount>
-          </S.PcAccountContainer>
+          {props.userinfo?.wallets?.map((el) => {
+            return (
+              <>
+                <S.PcAccountContainer
+                  key={uuidv4()}
+                  onClick={() => {
+                    props.onClickWallet(el.walletId);
+                  }}
+                >
+                  <S.PcAccountName>
+                    <div style={{ fontWeight: 600, fontSize: 15 }}>
+                      {el.walletName}
+                    </div>
+                    {el.delFlag === "Y" ? (
+                      <div
+                        style={{
+                          fontSize: 15,
+                          paddingLeft: 10,
+                          display: "flex",
+                          alignItems: "center",
+                        }}
+                      >
+                        <img
+                          src="/image/delete.png"
+                          style={{ width: "20%" }}
+                          onClick={() => {
+                            props.onClickDeleteWallet(el.walletId);
+                          }}
+                        />
+                        <div
+                          style={{
+                            paddingLeft: 5,
+                            color: "gray",
+                            fontSize: 12,
+                          }}
+                        >
+                          {">"} 가져온 지갑
+                        </div>
+                      </div>
+                    ) : (
+                      <></>
+                    )}
+                  </S.PcAccountName>
+                  <S.PcAccountAmount>
+                    {Object.keys(router.query).length === 0 ||
+                    router.query.chainId === ""
+                      ? el.userToken[0].tokenSym
+                      : props.token}
+                  </S.PcAccountAmount>
+                </S.PcAccountContainer>
+              </>
+            );
+          })}
         </div>
         <S.PcAccountFooter>
           <S.PcAccountButton
@@ -59,10 +109,21 @@ export default function AccountPresenter(props: IAccountPresenter) {
               <Button
                 key="submit"
                 type="primary"
-                onClick={props.handleOk}
+                onClick={() => {
+                  props.tab === "1"
+                    ? props.handleOk()
+                    : props.onClickWalletPk();
+                  props.status === "keystore" && props.onClickKeystore();
+                }}
                 style={{ fontSize: 18, paddingTop: 0, height: 35 }}
+                disabled={
+                  props.createName.length === 0 &&
+                  props.privatekey.length === 0 &&
+                  !props.name &&
+                  props.keypassword.length === 0
+                }
               >
-                확인
+                {props.tab === "1" ? "생성" : "가져오기"}
               </Button>,
             ]}
           >
@@ -236,14 +297,57 @@ export default function AccountPresenter(props: IAccountPresenter) {
           />
         </S.PcAccountHeaderBox>
         <div style={{ overflowY: "scroll", height: 200 }}>
-          {props.userinfo.wallet.map((el) => {
+          {props.userinfo?.wallets?.map((el) => {
             return (
-              <S.PcAccountContainer>
-                <S.PcAccountName>{el.walletNm}</S.PcAccountName>
-                {el.token.map((v, i) => {
-                  return <S.PcAccountAmount>{v.balance}</S.PcAccountAmount>;
-                })}
-              </S.PcAccountContainer>
+              <>
+                <S.PcAccountContainer
+                  key={uuidv4()}
+                  onClick={() => {
+                    props.onClickWallet(el.walletId);
+                  }}
+                >
+                  <S.PcAccountName>
+                    <div style={{ fontWeight: 600, fontSize: 15 }}>
+                      {el.walletName}
+                    </div>
+                    {el.delFlag === "Y" ? (
+                      <div
+                        style={{
+                          fontSize: 15,
+                          paddingLeft: 10,
+                          display: "flex",
+                          alignItems: "center",
+                        }}
+                      >
+                        <img
+                          src="/image/delete.png"
+                          style={{ width: "20%" }}
+                          onClick={() => {
+                            props.onClickDeleteWallet(el.walletId);
+                          }}
+                        />
+                        <div
+                          style={{
+                            paddingLeft: 5,
+                            color: "gray",
+                            fontSize: 12,
+                          }}
+                        >
+                          {">"} 가져온 지갑
+                        </div>
+                      </div>
+                    ) : (
+                      <></>
+                    )}
+                  </S.PcAccountName>
+                  <S.PcAccountAmount>
+                    {Object.keys(router.query).length === 0 ||
+                    router.query.chainId === ""
+                      ? el.userToken[0].tokenSym
+                      : props.token}
+                  </S.PcAccountAmount>
+                </S.PcAccountContainer>
+              </>
             );
           })}
         </div>

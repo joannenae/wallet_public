@@ -1,40 +1,36 @@
-import { useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import SwapPresenter from "./swap.presenter";
+import { ISwapContainer } from "./swap.types";
 
-export default function SwapContainer() {
-  const [status, setStatus] = useState(false);
-  const [jest, setJest] = useState("");
-  const [test, setTest] = useState("");
+export default function SwapContainer(props: ISwapContainer) {
+  const [inputValue, setInputValue] = useState({ first: "", second: "" });
 
-  const onChangeToken = (value: string) => {
-    console.log(`selected ${value}`);
-    console.log(value);
-    setJest("ETH1");
-    if (status === false) {
-      setJest(test);
-    }
+  const onChangeTokenFrom = (value: any, id: string) => {
+    setInputValue({ ...inputValue, [id]: value });
+    props.setFromId(value?.value);
   };
-  const onChangeTest = (value: string) => {
-    console.log(`selected ${value}`);
-
-    setTest("ETH2");
-    if (status === false) {
-      setTest(jest);
-    }
+  const onChangeTokenTo = (value: any, id: string) => {
+    setInputValue({ ...inputValue, [id]: value });
+    props.setToId(value?.value);
   };
-
   const onClickChange = () => {
-    setStatus((prev) => !prev);
+    const tempObj = { ...inputValue };
+    setInputValue({ first: tempObj.second, second: tempObj.first });
+  };
+
+  const onChangeValue = (event: ChangeEvent<HTMLInputElement>) => {
+    props.setValue(event.target.value);
   };
 
   return (
     <SwapPresenter
-      onChangeToken={onChangeToken}
       onClickChange={onClickChange}
-      status={status}
-      onChangeTest={onChangeTest}
-      jest={jest}
-      test={test}
+      onChangeTokenFrom={onChangeTokenFrom}
+      onChangeTokenTo={onChangeTokenTo}
+      inputValue={inputValue}
+      result={props.result}
+      onChangeValue={onChangeValue}
+      swapEs={props.swapEs}
     />
   );
 }

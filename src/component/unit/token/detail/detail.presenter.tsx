@@ -1,15 +1,33 @@
-import { Button, Modal } from "antd";
+import { Button, Divider, Modal, Spin } from "antd";
+import { useEffect, useState } from "react";
 import { Mobile, PC } from "../../../../commons/hooks/mediaquery";
 import SendContainer from "../../send/send.container";
 import SwapContainer from "../../swap/swap.container";
 import ModalContainer from "../modal/modal.container";
 import * as S from "./detail.styles";
 import { ITokenDetailPresenter } from "./detail.types";
+import Tooltip, { tooltipClasses, TooltipProps } from "@mui/material/Tooltip";
+import { styled } from "@mui/material/styles";
+import DetailPresenterItem from "./detail.presenteritem";
+import { v4 as uuidv4 } from "uuid";
 
 export default function DetailPresenter(props: ITokenDetailPresenter) {
+  // 해당 토큰의 거래내역에 있는 지갑 주소를 넣어야함
   let arr = "0xeccfe9da751317921ef767d2a96975188bfe3d96";
   let test =
     arr.substring(0, 3) + "******" + arr.substring(arr.length - 3, arr.length);
+
+  const LightTooltip = styled(({ className, ...props }: TooltipProps) => (
+    <Tooltip {...props} classes={{ popper: className }} />
+  ))(({ theme }) => ({
+    [`& .${tooltipClasses.tooltip}`]: {
+      backgroundColor: theme.palette.common.white,
+      color: "rgba(0, 0, 0, 0.87)",
+      boxShadow: theme.shadows[1],
+      fontSize: 11,
+    },
+  }));
+
   return (
     <>
       <Mobile>
@@ -20,7 +38,7 @@ export default function DetailPresenter(props: ITokenDetailPresenter) {
               <S.PcConTop>
                 <img
                   src="/image/arrowsmall.png"
-                  style={{ width: "10%", cursor: "pointer" }}
+                  style={{ width: "5%", cursor: "pointer" }}
                   onClick={props.onClickMoveToPage("/main")}
                 />
                 <div
@@ -31,10 +49,13 @@ export default function DetailPresenter(props: ITokenDetailPresenter) {
                     paddingLeft: 15,
                   }}
                 >
-                  attosiss
+                  {props.result?.walletName}
                 </div>
                 <div style={{ paddingLeft: 10 }}>{"/"}</div>
-                <S.MoWalletAddress>ETH</S.MoWalletAddress>
+                <S.MoWalletAddress>
+                  {" "}
+                  {props?.result?.tokenInfo?.tokens?.tokenSym}
+                </S.MoWalletAddress>
               </S.PcConTop>
               <S.PcImgBox>
                 <div
@@ -52,8 +73,10 @@ export default function DetailPresenter(props: ITokenDetailPresenter) {
                     }}
                   />
                 </div>
-                <S.MoAmount>0 ETH</S.MoAmount>
-                <S.MoMoney>$0.00 USD</S.MoMoney>
+                <S.MoAmount>{props?.result?.tokenInfo?.balance}</S.MoAmount>
+                <S.MoMoney>
+                  {props?.result?.tokenInfo?.tokens?.tokenSym}
+                </S.MoMoney>
               </S.PcImgBox>
             </S.MoContent>
           </S.MoContainer>
@@ -89,6 +112,7 @@ export default function DetailPresenter(props: ITokenDetailPresenter) {
                   </Button>,
                 ]}
               >
+                {/* @ts-ignore */}
                 <SendContainer />
               </Modal>
               <S.MoButton onClick={props.showSwap}>
@@ -155,203 +179,68 @@ export default function DetailPresenter(props: ITokenDetailPresenter) {
                 <ModalContainer />
               </Modal>
             </S.MoButtonBox>
-            {/* 10개이상 -> 더보기 누르면 로딩 - 무한스크롤형식 */}
-            <S.MoTransBox>
-              <S.PcTrans onClick={props.showTrans}>
-                <div>
-                  <div style={{ fontSize: "1.4rem", fontWeight: 600 }}>
-                    받기
-                  </div>
-                  <div
-                    style={{
-                      fontSize: "1.2rem",
-                      paddingTop: 7,
-                    }}
-                  >
-                    발신 : {test}{" "}
-                  </div>
-                </div>
-                <div>
-                  <div style={{ fontSize: "1.4rem", fontWeight: 600 }}>
-                    1.5ETH
-                  </div>
-                  <div
-                    style={{
-                      fontSize: "1.4rem",
-                      paddingTop: 7,
-                      textAlign: "right",
-                      color: "#00B649F9",
-                    }}
-                  >
-                    Mar 16
-                  </div>
-                </div>
-              </S.PcTrans>
-              <S.PcTrans onClick={props.showTrans}>
-                <div>
-                  <div style={{ fontSize: "1.4rem", fontWeight: 600 }}>
-                    받기
-                  </div>
-                  <div
-                    style={{
-                      fontSize: "1.2rem",
-                      paddingTop: 7,
-                    }}
-                  >
-                    발신 : {test}{" "}
-                  </div>
-                </div>
-                <div>
-                  <div style={{ fontSize: "1.4rem", fontWeight: 600 }}>
-                    1.5ETH
-                  </div>
-                  <div
-                    style={{
-                      fontSize: "1.4rem",
-                      paddingTop: 7,
-                      textAlign: "right",
-                      color: "#00B649F9",
-                    }}
-                  >
-                    Mar 16
-                  </div>
-                </div>
-              </S.PcTrans>
-              <S.PcTrans onClick={props.showTrans}>
-                <div>
-                  <div style={{ fontSize: "1.4rem", fontWeight: 600 }}>
-                    받기
-                  </div>
-                  <div
-                    style={{
-                      fontSize: "1.2rem",
-                      paddingTop: 7,
-                    }}
-                  >
-                    발신 : {test}{" "}
-                  </div>
-                </div>
-                <div>
-                  <div style={{ fontSize: "1.4rem", fontWeight: 600 }}>
-                    1.5ETH
-                  </div>
-                  <div
-                    style={{
-                      fontSize: "1.4rem",
-                      paddingTop: 7,
-                      textAlign: "right",
-                      color: "#00B649F9",
-                    }}
-                  >
-                    Mar 16
-                  </div>
-                </div>
-              </S.PcTrans>
-              <S.PcTrans onClick={props.showTrans}>
-                <div>
-                  <div style={{ fontSize: "1.4rem", fontWeight: 600 }}>
-                    받기
-                  </div>
-                  <div
-                    style={{
-                      fontSize: "1.2rem",
-                      paddingTop: 7,
-                    }}
-                  >
-                    발신 : {test}{" "}
-                  </div>
-                </div>
-                <div>
-                  <div style={{ fontSize: "1.4rem", fontWeight: 600 }}>
-                    1.5ETH
-                  </div>
-                  <div
-                    style={{
-                      fontSize: "1.4rem",
-                      paddingTop: 7,
-                      textAlign: "right",
-                      color: "#00B649F9",
-                    }}
-                  >
-                    Mar 16
-                  </div>
-                </div>
-              </S.PcTrans>
-              <S.PcTrans onClick={props.showTrans}>
-                <div>
-                  <div style={{ fontSize: "1.4rem", fontWeight: 600 }}>
-                    받기
-                  </div>
-                  <div
-                    style={{
-                      fontSize: "1.2rem",
-                      paddingTop: 7,
-                    }}
-                  >
-                    발신 : {test}{" "}
-                  </div>
-                </div>
-                <div>
-                  <div style={{ fontSize: "1.4rem", fontWeight: 600 }}>
-                    1.5ETH
-                  </div>
-                  <div
-                    style={{
-                      fontSize: "1.4rem",
-                      paddingTop: 7,
-                      textAlign: "right",
-                      color: "#00B649F9",
-                    }}
-                  >
-                    Mar 16
-                  </div>
-                </div>
-              </S.PcTrans>
-
-              <Modal
-                title="받기"
-                open={props.trans}
-                onCancel={props.transCancel}
-                onOk={props.transOk}
+            <Divider />
+            {props.loading === false ? (
+              <div
+                style={{
+                  position: "absolute",
+                  left: "50%",
+                  top: "40%",
+                  transform: "translate(-50%,-50%)",
+                }}
+              >
+                <Spin tip="로딩 중 ..." size="large" />
+              </div>
+            ) : props?.result?.trans?.length === 0 ? (
+              <div
+                style={{
+                  borderLeft: "1px solid gainsboro",
+                  width: "80%",
+                  height: "100%",
+                  textAlign: "center",
+                  position: "relative",
+                }}
               >
                 <div
                   style={{
-                    display: "flex",
-                    justifyContent: "center",
-                    margin: "20px 0px 40px 0px",
+                    textAlign: "center",
+                    fontSize: "1.4rem",
+                    position: "absolute",
+                    left: "60%",
+                    top: "40%",
+                    transform: "translate(-50%,-50%)",
+                    color: "gray",
                   }}
                 >
-                  <S.PcFlex>
-                    <S.PcConLeft>보내는 주소</S.PcConLeft>
-                    <S.PcConLeft>가스비</S.PcConLeft>
-                  </S.PcFlex>
-                  <S.PcFlex>
-                    <S.PcCon>{test}</S.PcCon>
-                    <S.PcCon>45.278793</S.PcCon>
-                  </S.PcFlex>
-                  <S.PcFlex>
-                    <S.PcConLeft>받는 주소</S.PcConLeft>
-                    <S.PcConLeft>지불 수수료</S.PcConLeft>
-                  </S.PcFlex>
-                  <S.PcFlex>
-                    <S.PcCon>{test}</S.PcCon>
-                    <S.PcCon>0.000025 ETH</S.PcCon>
-                  </S.PcFlex>
+                  거래 내역이 없습니다.
                 </div>
-                <S.PcBlue>트랜잭션 ID 복사 {">"}</S.PcBlue>
-                <S.PcBlue>블록탐색기에서 보기 {">"}</S.PcBlue>
-                <div
-                  style={{
-                    textAlign: "right",
-                    padding: 10,
-                    fontSize: "1.5rem",
-                    fontWeight: 600,
-                  }}
-                >
-                  합계 : 0.98344473{" "}
-                </div>
-              </Modal>
-            </S.MoTransBox>
+              </div>
+            ) : (
+              <S.PcTransBox>
+                {props.result?.trans?.map((el: any) => {
+                  return (
+                    <>
+                      <DetailPresenterItem
+                        key={uuidv4()}
+                        el={el}
+                        handleCopyClipBoard={props.handleCopyClipBoard}
+                        showTrans={function (): void {
+                          throw new Error("Function not implemented.");
+                        }}
+                        transOk={function (): void {
+                          throw new Error("Function not implemented.");
+                        }}
+                        transCancel={function (): void {
+                          throw new Error("Function not implemented.");
+                        }}
+                        trans={false}
+                        isCopy={false}
+                      />
+                    </>
+                  );
+                })}
+              </S.PcTransBox>
+            )}
           </S.MoContainerRight>
         </S.MoWrapper>
       </Mobile>
@@ -359,13 +248,16 @@ export default function DetailPresenter(props: ITokenDetailPresenter) {
         <S.PcWrapper data-aos="fade-right">
           {/* container */}
           <S.PcContainer>
+            <div style={{ margin: 35 }}>
+              <img
+                src="/image/arrowsmall.png"
+                style={{ width: "8%", cursor: "pointer" }}
+                onClick={props.onClickMain}
+              />
+            </div>
             <S.PcContent>
+              {" "}
               <S.PcConTop>
-                <img
-                  src="/image/arrowsmall.png"
-                  style={{ width: "10%", cursor: "pointer" }}
-                  onClick={props.onClickMoveToPage("/main")}
-                />
                 <div
                   style={{
                     color: "black",
@@ -374,18 +266,21 @@ export default function DetailPresenter(props: ITokenDetailPresenter) {
                     paddingLeft: 15,
                   }}
                 >
-                  attosiss
+                  {props.result?.walletName}
                 </div>
                 <div style={{ paddingLeft: 10 }}>{"/"}</div>
-                <S.PcWalletAddress>ETH</S.PcWalletAddress>
+                <S.PcWalletAddress>
+                  {props?.result?.tokenInfo?.tokens?.tokenSym}
+                </S.PcWalletAddress>
               </S.PcConTop>
               <S.PcImgBox>
                 <div
                   style={{
                     margin: "0 auto",
-                    width: "15%",
+                    width: "40%",
                     borderRadius: "50px",
                     background: "white",
+                    paddingBottom: 15,
                   }}
                 >
                   <img
@@ -395,8 +290,10 @@ export default function DetailPresenter(props: ITokenDetailPresenter) {
                     }}
                   />
                 </div>
-                <S.PcAmount>0 ETH</S.PcAmount>
-                <S.PcMoney>$0.00 USD</S.PcMoney>
+                <S.PcMoney>{props?.result?.tokenInfo?.balance} </S.PcMoney>
+                <S.PcMoney>
+                  {props?.result?.tokenInfo?.tokens?.tokenSym}{" "}
+                </S.PcMoney>
               </S.PcImgBox>
             </S.PcContent>
           </S.PcContainer>
@@ -432,6 +329,7 @@ export default function DetailPresenter(props: ITokenDetailPresenter) {
                   </Button>,
                 ]}
               >
+                {/* @ts-ignore */}
                 <SendContainer />
               </Modal>
               <S.PcButton onClick={props.showSwap}>
@@ -499,82 +397,67 @@ export default function DetailPresenter(props: ITokenDetailPresenter) {
               </Modal>
             </S.PcButtonBox>
             {/* 10개이상 -> 더보기 누르면 로딩 - 무한스크롤형식 */}
-            <S.PcTransBox>
-              <S.PcTrans onClick={props.showTrans}>
-                <div>
-                  <div style={{ fontSize: "1.6rem", fontWeight: 600 }}>
-                    받기
-                  </div>
-                  <div
-                    style={{
-                      fontSize: "1.4rem",
-                      paddingTop: 7,
-                    }}
-                  >
-                    발신 : {test}{" "}
-                  </div>
-                </div>
-                <div>
-                  <div style={{ fontSize: "1.6rem", fontWeight: 600 }}>
-                    1.5ETH
-                  </div>
-                  <div
-                    style={{
-                      fontSize: "1.4rem",
-                      paddingTop: 7,
-                      textAlign: "right",
-                      color: "#00B649F9",
-                    }}
-                  >
-                    Mar 16
-                  </div>
-                </div>
-              </S.PcTrans>
-
-              <Modal
-                title="받기"
-                open={props.trans}
-                onCancel={props.transCancel}
-                onOk={props.transOk}
+            {props.loading === false ? (
+              <div
+                style={{
+                  position: "absolute",
+                  left: "50%",
+                  top: "40%",
+                  transform: "translate(-50%,-50%)",
+                }}
+              >
+                <Spin tip="로딩 중 ..." size="large" />
+              </div>
+            ) : props?.result?.trans?.length === 0 ? (
+              <div
+                style={{
+                  borderLeft: "1px solid gainsboro",
+                  width: "80%",
+                  height: "100%",
+                  textAlign: "center",
+                  position: "relative",
+                }}
               >
                 <div
                   style={{
-                    display: "flex",
-                    justifyContent: "center",
-                    margin: "20px 0px 40px 0px",
+                    textAlign: "center",
+                    fontSize: "1.6rem",
+                    position: "absolute",
+                    left: "60%",
+                    top: "40%",
+                    transform: "translate(-50%,-50%)",
+                    color: "gray",
                   }}
                 >
-                  <S.PcFlex>
-                    <S.PcConLeft>보내는 주소</S.PcConLeft>
-                    <S.PcConLeft>가스비</S.PcConLeft>
-                  </S.PcFlex>
-                  <S.PcFlex>
-                    <S.PcCon>{test}</S.PcCon>
-                    <S.PcCon>45.278793</S.PcCon>
-                  </S.PcFlex>
-                  <S.PcFlex>
-                    <S.PcConLeft>받는 주소</S.PcConLeft>
-                    <S.PcConLeft>지불 수수료</S.PcConLeft>
-                  </S.PcFlex>
-                  <S.PcFlex>
-                    <S.PcCon>{test}</S.PcCon>
-                    <S.PcCon>0.000025 ETH</S.PcCon>
-                  </S.PcFlex>
+                  거래 내역이 없습니다.
                 </div>
-                <S.PcBlue>트랜잭션 ID 복사 {">"}</S.PcBlue>
-                <S.PcBlue>블록탐색기에서 보기 {">"}</S.PcBlue>
-                <div
-                  style={{
-                    textAlign: "right",
-                    padding: 10,
-                    fontSize: "1.5rem",
-                    fontWeight: 600,
-                  }}
-                >
-                  합계 : 0.98344473{" "}
-                </div>
-              </Modal>
-            </S.PcTransBox>
+              </div>
+            ) : (
+              <S.PcTransBox>
+                {props.result?.trans?.map((el: any) => {
+                  return (
+                    <>
+                      <DetailPresenterItem
+                        key={uuidv4()}
+                        el={el}
+                        handleCopyClipBoard={props.handleCopyClipBoard}
+                        showTrans={function (): void {
+                          throw new Error("Function not implemented.");
+                        }}
+                        transOk={function (): void {
+                          throw new Error("Function not implemented.");
+                        }}
+                        transCancel={function (): void {
+                          throw new Error("Function not implemented.");
+                        }}
+                        trans={false}
+                        isCopy={false}
+                      />
+                    </>
+                  );
+                })}
+              </S.PcTransBox>
+            )}
           </S.PcContainerRight>
         </S.PcWrapper>
       </PC>

@@ -1,4 +1,4 @@
-import { ChangeEvent } from "react";
+import { ChangeEvent, KeyboardEvent } from "react";
 
 export interface ILoginPresenter {
   email: string;
@@ -9,4 +9,5 @@ export interface ILoginPresenter {
   onClickVisible: () => void;
   onClickLogin: () => void;
   onClickMoveToPage: (path: string) => () => void;
+  handelEnter: (event: KeyboardEvent<HTMLElement>) => void;
 }

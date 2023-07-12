@@ -153,13 +153,11 @@ export const MoWrapper = styled.div`
 export const MoContainer = styled.div``;
 export const MoConTop = styled.div`
   display: flex;
-  /* flex-direction: column; */
   align-items: baseline;
   justify-content: center;
   margin: 0 auto;
   font-size: 2.5rem;
   width: 90%;
-  justify-content: center;
   border-bottom: 1px solid gainsboro;
   padding-bottom: 5%;
 `;
@@ -171,7 +169,8 @@ export const MoWalletAddress = styled.div`
   justify-content: flex-start;
   align-items: center;
   color: gray;
-  margin-left: 15px;
+  margin-left: 10px;
+  font-size: 1.4rem;
 `;
 export const MoModalAddress = styled.div`
   display: flex;
@@ -246,7 +245,7 @@ export const MoTabBox = styled.div`
   display: flex;
   justify-content: space-around;
   margin: 0 auto;
-  margin-top: 40px;
+  margin-top: 30px;
 `;
 
 export const MoTabTitle = styled.div<ITab>`

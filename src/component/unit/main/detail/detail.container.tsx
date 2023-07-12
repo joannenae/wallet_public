@@ -29,8 +29,6 @@ export default function DetailContainer(props: IDetailContainer) {
   // 계정 이름 input
   const [edit, setEdit] = useState("");
 
-  const router = useRouter();
-
   // 비공개키 내보내기 모달
   const showSecret = () => {
     setSecret(true);
@@ -55,11 +53,13 @@ export default function DetailContainer(props: IDetailContainer) {
   const onClickPassword = async () => {
     try {
       await axios
-        .post("/v1/wallet/wallet-pk", {
-          address: props.address,
+        .post("/v1/wallet/export-pk", {
+          walletId: props.walletId,
           password: password,
         })
         .then((response) => {
+          console.log("response", response);
+          setPassword("");
           if (response.data.status === 200) {
             setStatus(true);
             setPrivateKey(response.data.result);
@@ -68,12 +68,12 @@ export default function DetailContainer(props: IDetailContainer) {
             setStatus(false);
             setError(response.data.result);
           }
-          if (response.data.status === 301) {
-            Modal.error({
-              content: "세션이 만료되었습니다.다시 로그인해주세요.",
-            });
-            router.push(`/`);
-          }
+          // if (response.data.status === 301) {
+          //   Modal.error({
+          //     content: "세션이 만료되었습니다.다시 로그인해주세요.",
+          //   });
+          //   router.push(`/`);
+          // }
         });
     } catch (error) {
       console.log(error);
@@ -89,15 +89,16 @@ export default function DetailContainer(props: IDetailContainer) {
       try {
         await axios
           .post("/v1/wallet/export-keystore", {
-            address: props.address,
+            walletId: props.walletId,
             password: keypass,
           })
           .then((response) => {
-            console.log(response);
+            console.log("address", response.data);
             if (response.data.status === 200) {
-              const address = response.data.result.keystore.address;
+              setKeyOpen(false);
+              const address = response.data.result.address;
               let fileName = "DreamWallet-" + address + ".json";
-              let output = JSON.stringify(response.data.result.keystore);
+              let output = JSON.stringify(response.data.result);
               const element = document.createElement("a");
               const file = new Blob([output], {
                 type: "application/json",
@@ -108,21 +109,21 @@ export default function DetailContainer(props: IDetailContainer) {
               document.body.appendChild(element); // FireFox
               element.click();
             }
-            if (response.data.status === 101) {
-              Modal.error({ content: "비밀번호 생성 오류" });
+            if (response.data.status === 300) {
+              Modal.error({ content: "예상치 못한 오류" });
             }
-            if (response.data.status === 102) {
+            if (response.data.status === 501) {
               Modal.error({ content: "통신 오류" });
             }
-            if (response.data.status === 103) {
-              Modal.error({ content: "정보 저장 오류" });
+            if (response.data.status === 500) {
+              Modal.error({ content: "DB 정보 검색 오류" });
             }
-            if (response.data.status === 301) {
-              Modal.error({
-                content: "세션이 만료되었습니다.다시 로그인해주세요.",
-              });
-              router.push(`/`);
-            }
+            // if (response.data.status === 301) {
+            //   Modal.error({
+            //     content: "세션이 만료되었습니다.다시 로그인해주세요.",
+            //   });
+            //   router.push(`/`);
+            // }
           });
       } catch (error) {
         console.log(error);
@@ -162,20 +163,26 @@ export default function DetailContainer(props: IDetailContainer) {
     try {
       await axios
         .post("/v1/wallet/walletName-change", {
-          address: props.address,
+          walletId: props.walletId,
           name: edit,
         })
         .then((response) => {
           if (response.data.status === 200) {
-            Modal.success({ content: "계정 이름이 변경 되었습니다." });
-            setChange(false);
-          }
-          if (response.data.status === 301) {
-            Modal.error({
-              content: "세션이 만료되었습니다.다시 로그인해주세요.",
+            Modal.success({
+              content: "계정 이름이 변경 되었습니다.",
+              footer: null,
             });
-            router.push(`/`);
+            setChange(false);
+            setTimeout(() => {
+              window.location.reload();
+            }, 1500);
           }
+          // if (response.data.status === 301) {
+          //   Modal.error({
+          //     content: "세션이 만료되었습니다.다시 로그인해주세요.",
+          //   });
+          //   router.push(`/`);
+          // }
         });
     } catch (error) {
       console.log(error);

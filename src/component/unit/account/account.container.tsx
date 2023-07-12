@@ -1,7 +1,10 @@
+import { ExclamationCircleFilled } from "@ant-design/icons";
 import { Modal } from "antd";
 import axios from "axios";
 import { useRouter } from "next/router";
 import { ChangeEvent, useState } from "react";
+import { useRecoilState } from "recoil";
+import { walletInfoState } from "../../../commons/store";
 import AccountPresenter from "./account.presenter";
 import { IAccountContainer } from "./account.types";
 
@@ -15,6 +18,10 @@ export default function AccountContainer(props: IAccountContainer) {
   const [createName, setCreateName] = useState("");
   const [privatekey, setPrivateKey] = useState("");
   const [keypassword, setKeyPassword] = useState("");
+  const [symbol, setSymbol] = useState("");
+
+  // 지갑 recoil
+  const [walletinfo, setWalletInfo] = useRecoilState(walletInfoState);
 
   const router = useRouter();
 
@@ -38,11 +45,8 @@ export default function AccountContainer(props: IAccountContainer) {
             Modal.success({ content: "지갑이 생성 되었습니다." });
             setIsCreateModal(false);
           }
-          if (response.data.result === "DB 오류TOKEN") {
-            Modal.error({ content: "DB 오류 TOKEN!" });
-          }
-          if (response.data.result === "DB 오류") {
-            Modal.error({ content: "DB 오류!" });
+          if (response.data.status === 500) {
+            Modal.error({ content: "DB 오류." });
           }
           if (response.data.status === 501) {
             Modal.error({ content: "통신 오류!" });
@@ -50,12 +54,12 @@ export default function AccountContainer(props: IAccountContainer) {
           if (response.data.status === 300) {
             Modal.error({ content: "예상치 못한 오류!" });
           }
-          if (response.data.status === 301) {
-            Modal.error({
-              content: "세션이 만료되었습니다.다시 로그인해주세요.",
-            });
-            router.push(`/`);
-          }
+          // if (response.data.status === 301) {
+          //   Modal.error({
+          //     content: "세션이 만료되었습니다.다시 로그인해주세요.",
+          //   });
+          //   router.push(`/`);
+          // }
         });
     } catch (error) {
       console.log(error);
@@ -98,16 +102,13 @@ export default function AccountContainer(props: IAccountContainer) {
   const onClickWalletPk = async () => {
     try {
       await axios
-        .post("/v1/wallet/insert-walletPk", { pk: privatekey })
+        .post("/v1/wallet/add-walletPk", { pk: privatekey })
         .then((response) => {
           if (response.data.status === 200) {
             Modal.success({ content: "지갑 가져오기 성공!" });
             setIsCreateModal(false);
           }
-          if (response.data.result === "DB 오류TOKEN") {
-            Modal.error({ content: "DB 오류 TOKEN!" });
-          }
-          if (response.data.result === "DB 오류") {
+          if (response.data.status === 500) {
             Modal.error({ content: "DB 오류!" });
           }
           if (response.data.status === 501) {
@@ -116,12 +117,12 @@ export default function AccountContainer(props: IAccountContainer) {
           if (response.data.status === 300) {
             Modal.error({ content: "예상치 못한 오류!" });
           }
-          if (response.data.status === 301) {
-            Modal.error({
-              content: "세션이 만료되었습니다.다시 로그인해주세요.",
-            });
-            router.push(`/`);
-          }
+          // if (response.data.status === 301) {
+          //   Modal.error({
+          //     content: "세션이 만료되었습니다.다시 로그인해주세요.",
+          //   });
+          //   router.push(`/`);
+          // }
         });
     } catch (error) {
       console.log(error);
@@ -152,11 +153,11 @@ export default function AccountContainer(props: IAccountContainer) {
     setKeyPassword(event.target.value);
   };
 
-  // // 키스토어 파일 업로드
+  //  키스토어 파일 업로드
   const onClickKeystore = async () => {
     try {
       await axios
-        .post("/v1/wallet/insert-keystore", {
+        .post("/v1/wallet/add-keystore", {
           keystore: file,
           password: keypassword,
         })
@@ -165,10 +166,7 @@ export default function AccountContainer(props: IAccountContainer) {
             Modal.success({ content: "지갑 가져오기 성공" });
             setIsCreateModal(false);
           }
-          if (response.data.result === "DB 오류TOKEN") {
-            Modal.error({ content: "DB 오류 TOKEN!" });
-          }
-          if (response.data.result === "DB 오류") {
+          if (response.data.status === 500) {
             Modal.error({ content: "DB 오류!" });
           }
           if (response.data.status === 501) {
@@ -177,16 +175,59 @@ export default function AccountContainer(props: IAccountContainer) {
           if (response.data.status === 300) {
             Modal.error({ content: "예상치 못한 오류!" });
           }
-          if (response.data.status === 301) {
-            Modal.error({
-              content: "세션이 만료되었습니다.다시 로그인해주세요.",
-            });
-            router.push(`/`);
-          }
+          // if (response.data.status === 301) {
+          //   Modal.error({
+          //     content: "세션이 만료되었습니다.다시 로그인해주세요.",
+          //   });
+          //   router.push(`/`);
+          // }
         });
     } catch (error) {
       console.log(error);
     }
+  };
+
+  const onClickDeleteWallet = (walletId: number) => {
+    Modal.confirm({
+      content: "지갑을 삭제하시겠습니까?",
+      icon: <ExclamationCircleFilled />,
+      okText: "확인",
+      cancelText: "취소",
+      async onOk() {
+        try {
+          await axios
+            .post("/v1/wallet/delete-wallet", {
+              walletId: walletId,
+            })
+            .then((response) => {
+              if (response.data.status === 200) {
+                Modal.success({ content: "지갑이 삭제되었습니다." });
+                props.walletMain();
+              }
+              if (response.data.status === 500) {
+                Modal.error({ content: "지갑 삭제 실패." });
+              }
+              if (response.data.status === 300) {
+                Modal.error({ content: "예상치 못한 오류." });
+              }
+            });
+        } catch (error) {
+          console.log(error);
+        }
+      },
+    });
+  };
+
+  // 지갑 화면 전환
+  const onClickWallet = async (walletId: number) => {
+    router.push({
+      pathname: "/main",
+      query: {
+        walletId: walletId,
+        chainId: router.query.chainId,
+        networkName: router.query.networkName,
+      },
+    });
   };
 
   return (
@@ -217,6 +258,10 @@ export default function AccountContainer(props: IAccountContainer) {
       onClickKeystore={onClickKeystore}
       file={file}
       userinfo={props.userinfo}
+      onClickDeleteWallet={onClickDeleteWallet}
+      onClickWallet={onClickWallet}
+      symbol={symbol}
+      token={props.token}
     />
   );
 }

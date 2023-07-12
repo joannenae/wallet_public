@@ -60,8 +60,10 @@ export const PcPrivateKey = styled.div`
 
 export const PcError = styled.div`
   color: red;
-  margin-top: 10px;
-  margin-bottom: 20px;
+  margin-top: 15px;
+  padding-left: 5px;
+  /* text-align: center; */
+  margin-bottom: 35px;
   font-size: 1.2rem;
 `;
 //---------------------------mobile--------------------

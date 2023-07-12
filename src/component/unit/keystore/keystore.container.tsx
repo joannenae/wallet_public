@@ -9,7 +9,7 @@ export default function KeystoreContainer(props: IKeystoreContainer) {
   const [isPassword, setIsPassword] = useState(false);
   const [isPasswordConfirm, setIsPasswordConfirm] = useState(false);
 
-  const onChangePw = useCallback((e) => {
+  const onChangePw = useCallback((e: any) => {
     const passwordRegex =
       /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&< >(^)])[A-Za-z\d@$!%*#?&< >(^)]{8,16}$/;
     const passwordCurrent = e.target.value;
@@ -23,7 +23,7 @@ export default function KeystoreContainer(props: IKeystoreContainer) {
 
   // 비밀번호 확인
   const onChangePwCheck = useCallback(
-    (e) => {
+    (e: any) => {
       const passwordConfirmCurrent = e.target.value;
       props.setKeyPassConfirm(passwordConfirmCurrent);
       if (props.keypass === passwordConfirmCurrent) {

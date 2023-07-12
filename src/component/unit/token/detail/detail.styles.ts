@@ -21,7 +21,6 @@ export const PcContent = styled.div`
 
 export const PcConTop = styled.div`
   display: flex;
-  width: 50%;
   margin: 0 auto;
   justify-content: center;
   align-items: center;
@@ -46,7 +45,7 @@ export const PcWalletAddress = styled.div`
 export const PcImgBox = styled.div`
   width: 50%;
   margin: 0 auto;
-  margin-top: 8%;
+  margin-top: 6%;
 `;
 
 export const PcAmount = styled.div`
@@ -62,9 +61,10 @@ export const PcAmount = styled.div`
 export const PcMoney = styled.div`
   text-align: center;
   font-size: 1.7rem;
-  margin-top: 3%;
+  margin-top: 7%;
   color: #5a5a5a;
   letter-spacing: 0.2rem;
+  font-weight: 600;
 `;
 
 export const PcContainerRight = styled.div`
@@ -138,6 +138,10 @@ export const PcBlue = styled.div`
   padding-top: 10px;
   color: #0c70f2;
   cursor: pointer;
+  width: 40%;
+  margin: 0 auto;
+  text-align: center;
+  margin-bottom: 10px;
 `;
 //----------mobile-------------------------
 export const MoWrapper = styled.div`
@@ -163,7 +167,7 @@ export const MoWalletAddress = styled.div`
 `;
 export const MoAmount = styled.div`
   text-align: center;
-  font-size: 2rem;
+  font-size: 2.1rem;
   margin-top: 10%;
   color: #5a5a5a;
   word-spacing: 0.5rem;
@@ -173,7 +177,7 @@ export const MoAmount = styled.div`
 
 export const MoMoney = styled.div`
   text-align: center;
-  font-size: 1.4rem;
+  font-size: 1.6rem;
   margin-top: 3%;
   color: #5a5a5a;
   letter-spacing: 0.2rem;
